@@ -29,4 +29,4 @@ class TruItem(scrapy.Item):
     price_per_sqft = scrapy.Field()
     state_code = scrapy.Field()
     url = scrapy.Field()
-    listing_id = scrapy.Field()
+    #listing_id = scrapy.Field()

@@ -70,6 +70,6 @@ class TrulSpider(scrapy.Spider):
             item['build_year'] = trulia_json['yearBuilt']
             item['latitude'] = trulia_json['latitude']
             item['longitude'] = trulia_json['longitude']
-            item['listing_id'] = trulia_json['id']
+            #item['listing_id'] = trulia_json['id']
         item['url'] = response.url
         yield item
