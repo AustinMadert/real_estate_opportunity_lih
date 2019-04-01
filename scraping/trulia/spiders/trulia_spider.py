@@ -30,9 +30,10 @@ class TrulSpider(scrapy.Spider):
 
     
     def parse_listing_results_page(self, response):
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'}
         for href in response.xpath('//div[@class="containerFluid"]//a/@href').extract():
             url = response.urljoin(href)
-            yield scrapy.Request(url, callback=self.parse_listing_contents)
+            yield scrapy.Request(url, callback=self.parse_listing_contents, headers=headers)
 
     
 
