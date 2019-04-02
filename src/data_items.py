@@ -130,3 +130,10 @@ zc_population_data = [[78681,	'Standard',	'Williamson',	50606,	512],
 [78757,	'Standard',	'Travis',	21310,	512],
 [78758,	'Standard',	'Travis',	44072,	512 / 737],
 [78759,	'Standard',	'Travis',	38891,	512 / 737]]
+
+
+scene = {'camera': {'up': {'x': 0, 'y': 0, 'z': 1}, 'center': {'x': 0, 'y': 0, 'z': 0}, 'eye': {'x': 2.5, 'y': 0.1, 'z': 0.1}}, 'xaxis': {'range': [-1,4], 'title': 'Distance', 'gridcolor': 'rgb(255, 255, 255)', 'zerolinecolor': 'rgb(255, 255, 255)', 'showbackground': True, 'backgroundcolor': 'rgb(230, 230, 230)', 'showticklabels': False, 'ticks': ''},
+        'yaxis': {'range': [4,8], 'title': 'Valuation', 'gridcolor': 'rgb(255, 255, 255)', 'zerolinecolor': 'rgb(255, 255, 255)', 'showbackground': True, 'backgroundcolor': 'rgb(230, 230, 230)', 'showticklabels': False, 'ticks': ''},
+        'zaxis': {'range': [1,8], 'title': 'Population', 'gridcolor': 'rgb(255, 255, 255)', 'zerolinecolor': 'rgb(255, 255, 255)', 'showbackground': True, 'backgroundcolor': 'rgb(230, 230, 230)', 'showticklabels': False, 'ticks': ''}}
+        
+
