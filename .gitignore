@@ -25,3 +25,9 @@
 *.log
 *.sql
 *.sqlite
+*.csv
+
+# IPython Notebooks #
+######################
+*.ipynb_checkpoints
+*.ipynb
