@@ -30,4 +30,4 @@
 # IPython Notebooks #
 ######################
 *.ipynb_checkpoints
-*.ipynb
+#*.ipynb
