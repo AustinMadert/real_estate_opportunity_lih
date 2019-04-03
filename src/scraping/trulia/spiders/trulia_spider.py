@@ -85,5 +85,6 @@ class TrulSpider(scrapy.Spider):
         new_delay = max(target_delay, new_delay)
         new_delay = min(max(self.mindelay, new_delay), self.maxdelay)
         if response.status != 200 and new_delay <= slot.delay:
-            return slot.delay = new_delay
-        pass
+            return 
+        slot.delay = new_delay
+        
