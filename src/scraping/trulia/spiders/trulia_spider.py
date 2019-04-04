@@ -60,26 +60,39 @@ class TrulSpider(scrapy.Spider):
             
             # trulia_json = json.loads(json_content)
         bbsqft = response.xpath('//ul[@class="man"]/li/text()').getall()
-        price = response.xpath('//span[@data-role="price"]/text()').get()
-        
-            item['address'] = trulia_json['addressForDisplay']
-            item['street'] = trulia_json['street']
-            #item['neighborhood'] = trulia_json['neighborhood']
-            item['city'] = trulia_json['city']
-            item['state'] = trulia_json['stateName']
-            #item['state_code'] = trulia_json['stateCode']
-            #item['zip_code'] = trulia_json['zipCode']
-            item['price'] = price.strip()
-            item['sqft'] = bbsqft[3]
-            #item['price_per_sqft'] = trulia_json['pricePerSqft']
+        if bbsqft:
             item['house_type'] = bbsqft[2]
             item['bedrooms'] = bbsqft[0]
             item['bathrooms'] = bbsqft[1]
-            #item['partial_bathrooms'] = trulia_json['numPartialBathrooms']
-            # item['build_year'] = trulia_json['yearBuilt']
-            # item['latitude'] = trulia_json['latitude']
-            # item['longitude'] = trulia_json['longitude']
-            #item['listing_id'] = trulia_json['id']
+            item['sqft'] = bbsqft[3]
+        price = response.xpath('//span[@data-role="price"]/text()').get().strip()
+        if price:
+            item['price'] = price
+        address = response.xpath('//div[@data-role="address"]/text()').get().strip()
+        if address:
+            item['address'] = address
+        city_state_zip = response.xpath('//span[@data-role="cityState"]/text()').get().strip()
+        if city_state_zip:
+            item['state'] = city_state_zip
+        
+        
+        #item['street'] = trulia_json['street']
+        #item['neighborhood'] = trulia_json['neighborhood']
+        #item['city'] = trulia_json['city']
+        item['state'] = city_state_zip
+        #item['state_code'] = trulia_json['stateCode']
+        #item['zip_code'] = trulia_json['zipCode']
+        item['price'] = price
+        item['sqft'] = bbsqft[3]
+        #item['price_per_sqft'] = trulia_json['pricePerSqft']
+        item['house_type'] = bbsqft[2]
+        item['bedrooms'] = bbsqft[0]
+        item['bathrooms'] = bbsqft[1]
+        #item['partial_bathrooms'] = trulia_json['numPartialBathrooms']
+        # item['build_year'] = trulia_json['yearBuilt']
+        # item['latitude'] = trulia_json['latitude']
+        # item['longitude'] = trulia_json['longitude']
+        #item['listing_id'] = trulia_json['id']
         item['url'] = response.url
         yield item
 
