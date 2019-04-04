@@ -112,7 +112,7 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
             # Adding logging message here.
             spider.log(
                 u'User-Agent: {} {}'.format(request.headers.get('User-Agent'), request),
-                level=spider.logger.DEBUG
+                level=spider.log()
             )
 
     
