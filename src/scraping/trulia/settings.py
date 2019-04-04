@@ -58,12 +58,13 @@ ROBOTSTXT_OBEY = True
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
         'scrapy.downloadermiddlewares.retry.RetryMiddleware': 90,
-        'scrapy_proxies.RandomProxy': 100,
+        'trulia.middlewares.ProxiesMiddleware': 100,
         'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 110,
         'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware' : None,
         'trulia.middlewares.RotateUserAgentMiddleware' :400,
 
     }
+    # 'scrapy_proxies.RandomProxy': 100,
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html

@@ -84,7 +84,7 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
         #the default user_agent_list composes chrome,I E,firefox,Mozilla,opera,netscape
         #for more user agent strings,you can find it in http://www.useragentstring.com/pages/useragentstring.php
         self.user_agent_list = [\
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1"\
+        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",\
         "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11",\
         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.6 (KHTML, like Gecko) Chrome/20.0.1092.0 Safari/536.6",\
         "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.6 (KHTML, like Gecko) Chrome/20.0.1090.0 Safari/536.6",\
@@ -111,8 +111,29 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
 
             # Adding logging message here.
             spider.log(
-                u'User-Agent: {} {}'.format(request.headers.get('User-Agent'), request),
-                level=spider.log()
-            )
+                u'User-Agent: {} {}'.format(request.headers.get('User-Agent'), request))
+
+class ProxyMiddleware(object):
+    def __init__(self, settings):
+        self.proxies = [
+            'http://host1:104.236.47.73',
+            'http://host2:104.236.54.196',
+            'http://host3:178.128.3.127',
+            'http://host4:207.188.231.141',
+            'http://host5:159.122.164.163',
+            'http://host6:165.227.215.71',
+            'http://host7:67.205.132.241',
+            'http://host8:8.38.238.212',
+            'http://host9:142.93.49.89',
+            'http://host10:23.83.241.251',
+            ]
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler.settings)
+
+    def process_request(self, request, spider):
+        pp = random.choice(self.proxies)
+        request.meta['proxy'] = pp
 
     
