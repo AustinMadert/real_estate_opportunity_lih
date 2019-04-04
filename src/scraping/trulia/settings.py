@@ -61,7 +61,7 @@ DOWNLOADER_MIDDLEWARES = {
         'scrapy_proxies.RandomProxy': 100,
         'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 110,
         'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware' : None,
-        'tutorial.spiders.rotate_useragent.RotateUserAgentMiddleware' :400,
+        'trulia.middlewares.RotateUserAgentMiddleware' :400,
 
     }
 
