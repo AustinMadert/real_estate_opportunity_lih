@@ -113,7 +113,7 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
             spider.log(
                 u'User-Agent: {} {}'.format(request.headers.get('User-Agent'), request))
 
-class ProxyMiddleware(object):
+class ProxiesMiddleware(object):
     def __init__(self, settings):
         self.proxies = [
             'http://host1:104.236.47.73',
