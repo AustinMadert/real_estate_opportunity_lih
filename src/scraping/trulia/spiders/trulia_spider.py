@@ -74,17 +74,4 @@ class TrulSpider(scrapy.Spider):
         item['url'] = response.url
         yield item
 
-
-    def _adjust_delay(self, slot, latency, response):
-        target_delay = latency / self.target_concurrency
-        new_delay = (slot.delay + target_delay) / 2.0
-        
-        random_delay = random_delay_distribution.rvs()
-        #I generate delay in seconds (because the rate was 0.2 per second), but Scrapy delays are in ms, so I have to multiply it
-        new_delay = new_delay + random_delay * 1000
-        new_delay = max(target_delay, new_delay)
-        new_delay = min(max(self.mindelay, new_delay), self.maxdelay)
-        if response.status != 200 and new_delay <= slot.delay:
-            return 
-        slot.delay = new_delay
         
