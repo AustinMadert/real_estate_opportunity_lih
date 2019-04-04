@@ -22,7 +22,7 @@ class TrulSpider(scrapy.Spider):
             almost_page = last_p_split[-2]
             almost_there = almost_page.split('_p')
             last_page = int(almost_there[0])
-            return last_page
+            return 134 #last_page
         except:
             return 1
 

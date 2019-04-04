@@ -110,8 +110,7 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
             request.headers.setdefault('User-Agent', ua)
 
             # Adding logging message here.
-            spider.log(
-                u'User-Agent: {} {}'.format(request.headers.get('User-Agent'), request))
+            spider.log(u'User-Agent: {} {}'.format(request.headers.get('User-Agent'), request))
 
 class ProxiesMiddleware(object):
     def __init__(self, settings):
