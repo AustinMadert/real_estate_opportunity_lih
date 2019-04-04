@@ -117,7 +117,7 @@ RETRY_HTTP_CODES = [500, 503, 504, 400, 403, 404, 408]
 # http://username:password@host2:port
 # http://host3:port
 # ...
-PROXY_LIST = '/path/to/proxy/list.txt'
+PROXY_LIST = 'list.txt'
 
 # Proxy mode
 # 0 = Every requests have different proxy
