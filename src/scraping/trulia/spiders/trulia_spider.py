@@ -1,3 +1,8 @@
+
+# Adjusted the path to the version of scrapy using exponential distribution autothrottling
+import sys
+sys.path.append('/Users/austinmadert/scrapy_fork/src/scrapy')
+
 import scrapy
 import json
 import re
