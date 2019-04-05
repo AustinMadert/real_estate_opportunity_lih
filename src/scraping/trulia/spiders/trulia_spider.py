@@ -65,15 +65,26 @@ class TrulSpider(scrapy.Spider):
             item['bedrooms'] = bbsqft[0]
             item['bathrooms'] = bbsqft[1]
             item['sqft'] = bbsqft[3]
+        else:
+            self.logger.warning('No bbsqft item received for %s', response.url)
+
         price = response.xpath('//span[@data-role="price"]/text()').get().strip()
         if price:
             item['price'] = price
+        else:
+            self.logger.warning('No price item received for %s', response.url)
+
         address = response.xpath('//div[@data-role="address"]/text()').get().strip()
         if address:
             item['address'] = address
+        else:
+            self.logger.warning('No address item received for %s', response.url)
+
         city_state_zip = response.xpath('//span[@data-role="cityState"]/text()').get().strip()
         if city_state_zip:
             item['city_state_zip'] = city_state_zip
+        else:
+            self.logger.warning('No city_state_zip item received for %s', response.url)
         
         item['url'] = response.url
         yield item
