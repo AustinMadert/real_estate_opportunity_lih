@@ -4,9 +4,23 @@ import sys
 sys.path.append('/Users/austinmadert/scrapy_fork/src/scrapy')
 
 import scrapy
+from scrapy.crawler import CrawlerProcess
 import json
 import re
-from trulia.items import TruItem
+
+# from trulia.items import TruItem
+class TruItem(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    address = scrapy.Field()
+    price = scrapy.Field()
+    sqft = scrapy.Field()
+    house_type = scrapy.Field()
+    bedrooms = scrapy.Field()
+    bathrooms = scrapy.Field()
+    city_state_zip = scrapy.Field()
+    url = scrapy.Field()
+    #listing_id = scrapy.Field()
 
 query = 'TX/Austin/'
 
@@ -15,19 +29,19 @@ class TrulSpider(scrapy.Spider):
     allowed_domains = ["trulia.com"]
     start_urls = ['https://www.trulia.com/'+query]
 
-    def last_pagenumber_in_search(self, response):
-        try:							
-            last_p = response.xpath('//div[@class="txtC"]/a[contains(text(),"Last")]/@href').extract()
-            last_p_split = last_p[0].split('/')
-            almost_page = last_p_split[-2]
-            almost_there = almost_page.split('_p')
-            last_page = int(almost_there[0])
-            return 134 #last_page
-        except:
-            return 1
+    # def last_pagenumber_in_search(self, response):
+    #     try:							
+    #         last_p = response.xpath('//div[@class="txtC"]/a[contains(text(),"Last")]/@href').extract()
+    #         last_p_split = last_p[0].split('/')
+    #         almost_page = last_p_split[-2]
+    #         almost_there = almost_page.split('_p')
+    #         last_page = int(almost_there[0])
+    #         return last_page
+    #     except:
+    #         return 1
 
     def parse(self,response):
-        last_page_number = self.last_pagenumber_in_search(response)
+        last_page_number = 2 #self.last_pagenumber_in_search(response)
         page_urls = [response.url + str(pageNumber) +'_p/' for pageNumber in range(1, last_page_number + 1)]
 
         for page_url in page_urls:
@@ -90,3 +104,11 @@ class TrulSpider(scrapy.Spider):
         yield item
 
         
+
+
+
+if __name__ == "__main__":
+    process = CrawlerProcess({'USER_AGENT': 'Mozilla/5.0 (X11; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0'})
+
+    process.crawl(TrulSpider)
+    process.start()
