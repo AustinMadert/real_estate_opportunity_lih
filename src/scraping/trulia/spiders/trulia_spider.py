@@ -73,26 +73,8 @@ class TrulSpider(scrapy.Spider):
             item['address'] = address
         city_state_zip = response.xpath('//span[@data-role="cityState"]/text()').get().strip()
         if city_state_zip:
-            item['state'] = city_state_zip
+            item['city_state_zip'] = city_state_zip
         
-        
-        #item['street'] = trulia_json['street']
-        #item['neighborhood'] = trulia_json['neighborhood']
-        #item['city'] = trulia_json['city']
-        item['state'] = city_state_zip
-        #item['state_code'] = trulia_json['stateCode']
-        #item['zip_code'] = trulia_json['zipCode']
-        item['price'] = price
-        item['sqft'] = bbsqft[3]
-        #item['price_per_sqft'] = trulia_json['pricePerSqft']
-        item['house_type'] = bbsqft[2]
-        item['bedrooms'] = bbsqft[0]
-        item['bathrooms'] = bbsqft[1]
-        #item['partial_bathrooms'] = trulia_json['numPartialBathrooms']
-        # item['build_year'] = trulia_json['yearBuilt']
-        # item['latitude'] = trulia_json['latitude']
-        # item['longitude'] = trulia_json['longitude']
-        #item['listing_id'] = trulia_json['id']
         item['url'] = response.url
         yield item
 
