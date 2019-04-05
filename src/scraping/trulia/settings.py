@@ -37,7 +37,7 @@ ROBOTSTXT_OBEY = True
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-#COOKIES_ENABLED = False
+COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
@@ -58,7 +58,7 @@ ROBOTSTXT_OBEY = True
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
         'scrapy.downloadermiddlewares.retry.RetryMiddleware': 90,
-        'trulia.middlewares.ProxiesMiddleware': 100,
+        'trulia.middlewares.ProxiesMiddleware': None,
         'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 110,
         'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware' : None,
         'trulia.middlewares.RotateUserAgentMiddleware' :400,
@@ -68,7 +68,7 @@ DOWNLOADER_MIDDLEWARES = {
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
 EXTENSIONS = {
-   'scrapy.extensions.throttle.AutoThrottle': 0,
+   'scrapy.extensions.throttle.AutoThrottle': None,
 }
 
 # Configure item pipelines
