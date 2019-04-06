@@ -41,7 +41,7 @@ class TrulSpider(scrapy.Spider):
     #         return 1
 
     def parse(self,response):
-        last_page_number = 2 #self.last_pagenumber_in_search(response)
+        last_page_number = 135 #self.last_pagenumber_in_search(response)
         page_urls = [response.url + str(pageNumber) +'_p/' for pageNumber in range(1, last_page_number + 1)]
 
         for page_url in page_urls:
