@@ -75,28 +75,50 @@ class TrulSpider(scrapy.Spider):
             # trulia_json = json.loads(json_content)
         bbsqft = response.xpath('//ul[@class="man"]/li/text()').getall()
         if bbsqft:
-            item['house_type'] = bbsqft[2]
-            item['bedrooms'] = bbsqft[0]
-            item['bathrooms'] = bbsqft[1]
-            item['sqft'] = bbsqft[3]
+            try:
+                item['house_type'] = bbsqft[2]
+            except:
+                item['house_type'] = None
+            try:
+                item['bedrooms'] = bbsqft[0]
+            except:
+                item['bedrooms'] = None
+            try:
+                item['bathrooms'] = bbsqft[1]
+            except:
+                item['bathrooms'] = None
+            try:    
+                item['sqft'] = bbsqft[3]
+            except:
+                item['sqft'] = None
+
         else:
             self.logger.warning('No bbsqft item received for %s', response.url)
 
         price = response.xpath('//span[@data-role="price"]/text()').get().strip()
         if price:
-            item['price'] = price
+            try:
+                item['price'] = price
+            except:
+                item['price'] = None
         else:
             self.logger.warning('No price item received for %s', response.url)
 
         address = response.xpath('//div[@data-role="address"]/text()').get().strip()
         if address:
-            item['address'] = address
+            try:
+                item['address'] = address
+            except:
+                item['address'] = None
         else:
             self.logger.warning('No address item received for %s', response.url)
 
         city_state_zip = response.xpath('//span[@data-role="cityState"]/text()').get().strip()
         if city_state_zip:
-            item['city_state_zip'] = city_state_zip
+            try:
+                item['city_state_zip'] = city_state_zip
+            except:
+                item['city_state_zip'] = None
         else:
             self.logger.warning('No city_state_zip item received for %s', response.url)
         
