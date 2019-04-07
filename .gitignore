@@ -28,6 +28,7 @@
 *.sqlite
 *.csv
 data/
+crawl1/
 
 # IPython Notebooks #
 ######################
