@@ -26,7 +26,7 @@ ITEM_PIPELINES = {'trulia.pipelines.DuplicatesPipeline':100,
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 16
+CONCURRENT_REQUESTS = 1
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
@@ -64,7 +64,7 @@ DEFAULT_REQUEST_HEADERS = {
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
         'scrapy.downloadermiddlewares.retry.RetryMiddleware': 90,
-        'trulia.middlewares.ProxiesMiddleware': 100,
+        'trulia.middlewares.ProxiesMiddleware': None,
         'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 110,
         'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware' : None,
         'trulia.middlewares.RotateUserAgentMiddleware' :400,
@@ -87,16 +87,16 @@ EXTENSIONS = {
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
 AUTOTHROTTLE_ENABLED = True
 # The initial download delay
-AUTOTHROTTLE_START_DELAY = 10
+AUTOTHROTTLE_START_DELAY = 20
 # The maximum download delay to be set in case of high latencies
 AUTOTHROTTLE_MAX_DELAY = 60
 # The average number of requests Scrapy should be sending in parallel to
 # each remote server
-AUTOTHROTTLE_TARGET_CONCURRENCY = 16.0
+AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 # Enable showing throttling stats for every response received:
 AUTOTHROTTLE_DEBUG = True
 # Added value for the exponential distribution 
-AUTOTHROTTLE_LAMBDA = 1.0
+AUTOTHROTTLE_LAMBDA = 0.8
 
 # Enable and configure HTTP caching (disabled by default)
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
