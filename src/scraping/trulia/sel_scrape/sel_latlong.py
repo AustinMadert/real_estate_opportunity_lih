@@ -11,8 +11,9 @@ url = 'https://www.gps-coordinates.net/'
 driver = webdriver.Chrome()
 driver.get(url)
 
-def data_load():
-    pass
+def data_load(path):
+    df = pd.read_pickle(path)
+    return list(df['adj_address'])
 
 def data_pickle():
     pass
@@ -22,8 +23,14 @@ def paste_keys(self, xpath, text):
     el = self.driver.find_element_by_xpath(xpath)
     el.send_keys(Keys.CONTROL, 'v')
 
-def main():
-    pass
+def collect_latlongs(addresslist, xpath):
+    for address in addresslist:
+
+
+def main(path='../trulscraped_data.pkl', elements=xpath):
+    addresslist = data_load(path)
+    collect_latlongs(addresslist, xpath)
+
 
 
 if __name__ == '__main__':
