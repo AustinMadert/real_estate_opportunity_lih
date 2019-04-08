@@ -6,6 +6,7 @@ import pandas as pd
 import os
 import pickle
 import time
+import pyperclip
 
 url = 'https://www.gps-coordinates.net/'
 
@@ -52,13 +53,20 @@ def paste_keys(xpath, text):
 def collect_latlongs(addresslist, paste_path, button_path, lat_path, long_path,
                     wait=2):
 
+    latlonglist = []
+
     for address in addresslist:
         time.sleep(wait)
 
+        #paste the address and click the get button"
         paste_keys(paste_path, address)
-        python_button = driver.find_element_by_xpath(button_path)
-        python_button.click()
-        
+        get_button = driver.find_element_by_xpath(button_path)
+        get_button.click()
+
+        #copy the lat and long into the result list
+        lat_field = driver.find_element_by_xpath(lat_path)
+
+        long_field = driver.find_element_by_xpath(long_path)
 
     
     return latlonglist
