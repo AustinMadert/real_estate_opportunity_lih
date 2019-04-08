@@ -44,13 +44,8 @@ def paste_keys(xpath, text):
     returns: None
     '''
 
-    # os.system("echo %s| clip" % text.strip())
     element = driver.find_element_by_xpath(xpath)
-    for i in range(8):
-        element.send_keys(Keys.BACKSPACE)
     element.send_keys(text)
-    # element.send_keys(Keys.CONTROL, 'a')
-    # element.send_keys(Keys.CONTROL, 'v')
     return None
 
 
@@ -70,25 +65,25 @@ def collect_latlongs(addresslist, paste_path, button_path, latlong_path,
         latlong = driver.find_element_by_xpath(latlong_path)
         
 
-        #copy the lat and long into the result list
-        lat_field = driver.find_element_by_xpath(lat_path)
-        lat_field.send_keys(Keys.CONTROL, 'a')#highlight contents of lat box
-        lat_field.send_keys(Keys.CONTROL, 'c')#copy contents of lat box
-        latitude = lat_field.send_keys(pyperclip.paste()) #store contents in var
+        # #copy the lat and long into the result list
+        # lat_field = driver.find_element_by_xpath(lat_path)
+        # lat_field.send_keys(Keys.CONTROL, 'a')#highlight contents of lat box
+        # lat_field.send_keys(Keys.CONTROL, 'c')#copy contents of lat box
+        # latitude = lat_field.send_keys(pyperclip.paste()) #store contents in var
 
-        long_field = driver.find_element_by_xpath(long_path)
-        long_field.send_keys(Keys.CONTROL, 'a')#highlight contents of long box
-        long_field.send_keys(Keys.CONTROL, 'c')#copy contents of long box
-        longitude = long_field.send_keys(pyperclip.paste()) #store contents
+        # long_field = driver.find_element_by_xpath(long_path)
+        # long_field.send_keys(Keys.CONTROL, 'a')#highlight contents of long box
+        # long_field.send_keys(Keys.CONTROL, 'c')#copy contents of long box
+        # longitude = long_field.send_keys(pyperclip.paste()) #store contents
 
-        latlonglist.append((latitude, longitude))
+        latlonglist.append(latlong)
     
     return latlonglist
 
 
 def main(pkl_path='/Users/austinmadert/galvanize_repositories/\
 real_estate_opportunity_lih/src/scraping/trulia/sel_scrape/trulscraped_df.pkl', 
-        paste_path='//input[@id="JV3220"]',
+        paste_path='//input[@placeholder="Type address here to get lat long"]',
         button_path='//button[@title="Find_lat_long_coordinates"]',
         latlong_path='//input[@id="latitude" and @class="form-control"]/text()'):
 
