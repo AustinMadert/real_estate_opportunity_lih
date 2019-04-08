@@ -34,7 +34,7 @@ def data_pickle(latlonglist):
     return None
 
 
-def paste_keys(self, xpath, text):
+def paste_keys(xpath, text):
     '''Takes an xpath for the selenium scraper and the text string and pastes
     the text into the web page element
 
@@ -42,7 +42,7 @@ def paste_keys(self, xpath, text):
     '''
 
     os.system("echo %s| clip" % text.strip())
-    el = self.driver.find_element_by_xpath(xpath)
+    el = driver.find_element_by_xpath(xpath)
     el.send_keys(Keys.CONTROL, 'v')
     return None
 
@@ -50,15 +50,17 @@ def paste_keys(self, xpath, text):
 def collect_latlongs(addresslist, xpath):
 
     for address in addresslist:
+        paste_keys(xpath, address)
+
     
     return latlonglist
 
 
-def main(path='../trulscraped_data.pkl', elements=xpath):
-    
+def main(path='../trulscraped_data.pkl', paste_path='//input[@id="address"]'):
+
 
     addresslist = data_load(path)
-    latlonglist = collect_latlongs(addresslist, xpath)
+    latlonglist = collect_latlongs(addresslist, paste_path)
     data_pickle(latlonglist)
 
 
