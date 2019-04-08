@@ -33,12 +33,12 @@ def data_export(latlonglist):
     returns: None
     '''
 
-    with open('latlonglist.pkl', 'rb') as rf:
+    with open('latlonglist.pkl', 'rb+') as rf:
         data = pickle.load(rf)
 
     data.append(latlonglist)
 
-    with open('latlonglist', 'wb') as wf:
+    with open('latlonglist', 'wb+') as wf:
         pickle.dump(data, wf)
 
     return None
@@ -103,7 +103,7 @@ real_estate_opportunity_lih/src/scraping/trulia/sel_scrape/trulscraped_df.pkl',
     # scrape data
     latlonglist = collect_latlongs(addresslist, paste_path, button_path,
                     latlong_path)
-                    
+
 
 if __name__ == '__main__':
     main()
