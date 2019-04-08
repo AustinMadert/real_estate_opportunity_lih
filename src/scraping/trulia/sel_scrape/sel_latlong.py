@@ -35,12 +35,12 @@ def data_export(latlonglist):
     returns: None
     '''
 
-    with open('latlonglist.pkl', 'rb+') as rf:
+    with open('Users/austinmadert/galvanize_repositories/real_estate_opportunity_lih/src/scraping/trulia/sel_scrape/latlonglist.pkl', 'rb') as rf:
         data = pickle.load(rf)
 
-    data.append(latlonglist)
+    data += latlonglist
 
-    with open('latlonglist', 'wb+') as wf:
+    with open('latlonglist', 'wb') as wf:
         pickle.dump(data, wf)
 
     return None
@@ -58,8 +58,8 @@ def paste_keys(xpath, text):
     return None
 
 
-def collect_latlongs(addresslist, paste_path, button_path, lat_path, long_path
-                wait=15):
+def collect_latlongs(addresslist, paste_path, button_path, lat_path, long_path,
+                wait=10):
     '''Takes a list of addresses and for each address retrieves the latitude
     and longitude from the target website using the xpaths given
 
@@ -70,26 +70,26 @@ def collect_latlongs(addresslist, paste_path, button_path, lat_path, long_path
     count = 1
 
     for address in addresslist:
-        try:
-            time.sleep(wait)
+        
+        time.sleep(wait)
 
-            # paste the address and click the get button"
-            paste_keys(paste_path, address)
-            get_button = driver.find_element_by_xpath(button_path)
-            get_button.click()
+        # paste the address and click the get button"
+        paste_keys(paste_path, address)
+        get_button = driver.find_element_by_xpath(button_path)
+        get_button.click()
 
-            # retrieve latlong text from the webpage
-            lat = driver.find_element_by_xpath(lat_path).text
-            lon = driver.find_element_by_xpath(long_path).text
-            # lat, lon = latlong.strip('(').strip(')').split(',')
+        # retrieve latlong text from the webpage
+        lat = driver.find_element_by_xpath(lat_path).text
+        lon = driver.find_element_by_xpath(long_path).text
+        # lat, lon = latlong.strip('(').strip(')').split(',')
 
-            data_export(list((address,lat,lon)))
-            print('Successfully appended try ' + str(count) + ' coordinates')
-            count += 1
+        data_export(list((address,lat,lon)))
+        print('Successfully appended try ' + str(count) + ' coordinates')
+        count += 1
 
-        except:
-            print('ERROR: unsuccessful on try ' + str(count))
-            count += 1
+    
+        # print('ERROR: unsuccessful on try ' + str(count))
+        # count += 1
     
     return latlonglist
 
@@ -106,7 +106,7 @@ real_estate_opportunity_lih/src/scraping/trulia/sel_scrape/trulscraped_df.pkl',
 
     # scrape data
     latlonglist = collect_latlongs(addresslist, paste_path, button_path,
-                    latlong_path)
+                    lat_path, long_path)
 
 
 if __name__ == '__main__':
