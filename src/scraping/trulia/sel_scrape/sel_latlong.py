@@ -11,7 +11,7 @@ url = 'https://www.mapdevelopers.com/geocode_tool.php'
 options = Options()
 options.add_argument('user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36')
 options.add_experimental_option("prefs", {"profile.default_content_settings.cookies": 2})
-# options.add_argument('--headless')
+options.add_argument('--headless')
 
 driver = webdriver.Chrome(options=options)
 driver.get(url)
@@ -34,14 +34,16 @@ def data_export(latlonglist):
     
     returns: None
     '''
+    # filename = 'Users/austinmadert/galvanize_repositories/real_estate_opportunity_lih/src/scraping/trulia/sel_scrape/latlonglist.pkl'
+    # os.makedirs(os.path.dirname(filename), exist_ok=True)
 
-    with open('Users/austinmadert/galvanize_repositories/real_estate_opportunity_lih/src/scraping/trulia/sel_scrape/latlonglist.pkl', 'rb') as rf:
-        data = pickle.load(rf)
+    # with open(filename, 'rb') as rf:
+    #     data = pickle.load(rf)
 
-    data += latlonglist
+    # data += latlonglist
 
     with open('latlonglist', 'wb') as wf:
-        pickle.dump(data, wf)
+        pickle.dump(latlonglist, wf)
 
     return None
 
@@ -83,7 +85,9 @@ def collect_latlongs(addresslist, paste_path, button_path, lat_path, long_path,
         lon = driver.find_element_by_xpath(long_path).text
         # lat, lon = latlong.strip('(').strip(')').split(',')
 
-        data_export(list((address,lat,lon)))
+
+        latlonglist.append((address, lat, lon))
+        # data_export(list((address,lat,lon)))
         print('Successfully appended try ' + str(count) + ' coordinates')
         count += 1
 
@@ -105,8 +109,10 @@ real_estate_opportunity_lih/src/scraping/trulia/sel_scrape/trulscraped_df.pkl',
     addresslist = data_load(pkl_path)
 
     # scrape data
-    latlonglist = collect_latlongs(addresslist, paste_path, button_path,
+    result = collect_latlongs(addresslist, paste_path, button_path,
                     lat_path, long_path)
+
+    data_export(result)
 
 
 if __name__ == '__main__':
