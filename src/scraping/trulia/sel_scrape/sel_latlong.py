@@ -51,32 +51,27 @@ def paste_keys(xpath, text):
 
 def collect_latlongs(addresslist, paste_path, button_path, latlong_path, 
                 wait=2):
+    '''Takes a list of addresses and for each address retrieves the latitude
+    and longitude from the target website using the xpaths given
+
+    returns: List of tuples with address and its latitude and longitude
+    '''
 
     latlonglist = []
 
     for address in addresslist:
         time.sleep(wait)
 
-        #paste the address and click the get button"
+        # paste the address and click the get button"
         paste_keys(paste_path, address)
         get_button = driver.find_element_by_xpath(button_path)
         get_button.click()
 
-        latlong = driver.find_element_by_xpath(latlong_path)
-        
+        # retrieve latlong text from the webpage
+        latlong = driver.find_element_by_xpath(latlong_path).text
+        lat, lon = latlong.strip('(').strip(')').split(',')
 
-        # #copy the lat and long into the result list
-        # lat_field = driver.find_element_by_xpath(lat_path)
-        # lat_field.send_keys(Keys.CONTROL, 'a')#highlight contents of lat box
-        # lat_field.send_keys(Keys.CONTROL, 'c')#copy contents of lat box
-        # latitude = lat_field.send_keys(pyperclip.paste()) #store contents in var
-
-        # long_field = driver.find_element_by_xpath(long_path)
-        # long_field.send_keys(Keys.CONTROL, 'a')#highlight contents of long box
-        # long_field.send_keys(Keys.CONTROL, 'c')#copy contents of long box
-        # longitude = long_field.send_keys(pyperclip.paste()) #store contents
-
-        latlonglist.append(latlong)
+        latlonglist.append((address,lat,lon))
     
     return latlonglist
 
@@ -84,13 +79,17 @@ def collect_latlongs(addresslist, paste_path, button_path, latlong_path,
 def main(pkl_path='/Users/austinmadert/galvanize_repositories/\
 real_estate_opportunity_lih/src/scraping/trulia/sel_scrape/trulscraped_df.pkl', 
         paste_path='//input[@placeholder="Type address here to get lat long"]',
-        button_path='//button[@title="Find_lat_long_coordinates"]',
-        latlong_path='//input[@id="latitude" and @class="form-control"]/text()'):
+        button_path='//button[@title="Find lat long coordinates"]',
+        latlong_path='//span[@id="latlngspan" and @class="coordinatetxt"]'):
 
-
+    # load dataframe
     addresslist = data_load(pkl_path)
+
+    # scrape data
     latlonglist = collect_latlongs(addresslist, paste_path, button_path,
                     latlong_path)
+    
+    # pickle data
     data_pickle(latlonglist)
 
 
