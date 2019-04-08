@@ -12,7 +12,7 @@ url = 'https://www.gps-coordinates.net/'
 
 driver = webdriver.Chrome()
 driver.get(url)
-driver.implicitly_wait(30)
+driver.implicitly_wait(10)
 
 def data_load(pkl_path):
     '''Reads a pickle object and loads pandas dataframe object from a given path
@@ -79,11 +79,12 @@ def collect_latlongs(addresslist, paste_path, button_path, lat_path, long_path,
     return latlonglist
 
 
-def main(pkl_path='../trulscraped_data.pkl', 
-        paste_path='//input[@id="address"]',
-        button_path='//button[@class=btn.btn-primary]',
-        lat_path='//input[@id="latitude]',
-        long_path='//input[@id="longitude"'):
+def main(pkl_path='/Users/austinmadert/galvanize_repositories/\
+real_estate_opportunity_lih/src/scraping/trulia/sel_scrape/trulscraped_df.pkl', 
+        paste_path='//input[@id="address" and @class="form-control_ap-input"]',
+        button_path='//button[@class=btn_btn-primary and @type="button"]',
+        lat_path='//input[@id="latitude" and @class="form-control"]',
+        long_path='//input[@id="longitude" and @class="form-control"]'):
 
 
     addresslist = data_load(pkl_path)
