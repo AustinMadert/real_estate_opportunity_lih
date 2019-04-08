@@ -12,7 +12,7 @@ driver = webdriver.Chrome()
 driver.get(url)
 driver.implicitly_wait(30)
 
-def data_load(path):
+def data_load(pkl_path):
     '''Reads a pickle object and loads pandas dataframe object from a given path
     and then converts a slice of the dataframe for addresses into a list object
 
@@ -48,12 +48,12 @@ def paste_keys(xpath, text):
     return None
 
 
-def collect_latlongs(addresslist, paste_path):
+def collect_latlongs(addresslist, paste_path, button_path):
 
     for address in addresslist:
         driver.implicitly_wait(5)
         paste_keys(paste_path, address)
-        python_button = driver.find_element_by_xpath('MainContent_uxLevel1_Agencies_uxAgencyBtn_33') #FHSU
+        python_button = driver.find_element_by_xpath(button_path)
         python_button.click()
         
 
@@ -61,11 +61,13 @@ def collect_latlongs(addresslist, paste_path):
     return latlonglist
 
 
-def main(path='../trulscraped_data.pkl', paste_path='//input[@id="address"]'):
+def main(pkl_path='../trulscraped_data.pkl', 
+        paste_path='//input[@id="address"]',
+        button_path='//button[@class=btn.btn-primary]'):
 
 
-    addresslist = data_load(path)
-    latlonglist = collect_latlongs(addresslist, paste_path)
+    addresslist = data_load(pkl_path)
+    latlonglist = collect_latlongs(addresslist, paste_path, button_path)
     data_pickle(latlonglist)
 
 
