@@ -5,7 +5,6 @@ import pandas as pd
 import os
 import pickle
 import time
-import pyperclip
 
 url = 'https://www.latlong.net/convert-address-to-lat-long.html'
 
@@ -27,15 +26,21 @@ def data_load(pkl_path):
     return list(df['adj_address'])
 
 
-def data_pickle(latlonglist):
+def data_export(latlonglist):
     '''Takes a list object of addresses, latitudes, and longitudes and writes
     them to a pickle file for later use
     
     returns: None
     '''
 
-    with open('latlonglist.pkl', 'wb') as f:
-        pickle.dump(latlonglist, f)
+    with open('latlonglist.pkl', 'rb') as rf:
+        data = pickle.load(rf)
+
+    data.append(latlonglist)
+
+    with open('latlonglist', 'wb') as wf:
+        pickle.dump(data, wf)
+
     return None
 
 
@@ -52,7 +57,7 @@ def paste_keys(xpath, text):
 
 
 def collect_latlongs(addresslist, paste_path, button_path, latlong_path, 
-                wait=2):
+                wait=10):
     '''Takes a list of addresses and for each address retrieves the latitude
     and longitude from the target website using the xpaths given
 
@@ -60,20 +65,28 @@ def collect_latlongs(addresslist, paste_path, button_path, latlong_path,
     '''
 
     latlonglist = []
+    count = 1
 
     for address in addresslist:
-        time.sleep(wait)
+        try:
+            time.sleep(wait)
 
-        # paste the address and click the get button"
-        paste_keys(paste_path, address)
-        get_button = driver.find_element_by_xpath(button_path)
-        get_button.click()
+            # paste the address and click the get button"
+            paste_keys(paste_path, address)
+            get_button = driver.find_element_by_xpath(button_path)
+            get_button.click()
 
-        # retrieve latlong text from the webpage
-        latlong = driver.find_element_by_xpath(latlong_path).text
-        lat, lon = latlong.strip('(').strip(')').split(',')
+            # retrieve latlong text from the webpage
+            latlong = driver.find_element_by_xpath(latlong_path).text
+            lat, lon = latlong.strip('(').strip(')').split(',')
 
-        latlonglist.append((address,lat,lon))
+            data_export(list((address,lat,lon)))
+            print('Successfully appended try ' + str(count) + ' coordinates')
+            count += 1
+
+        except:
+            print('ERROR: unsuccessful on try ' + str(count))
+            count += 1
     
     return latlonglist
 
@@ -90,11 +103,7 @@ real_estate_opportunity_lih/src/scraping/trulia/sel_scrape/trulscraped_df.pkl',
     # scrape data
     latlonglist = collect_latlongs(addresslist, paste_path, button_path,
                     latlong_path)
-    
-    # pickle data
-    data_pickle(latlonglist)
-
-
+                    
 
 if __name__ == '__main__':
     main()
