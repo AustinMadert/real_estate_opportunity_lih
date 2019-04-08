@@ -10,6 +10,7 @@ url = 'https://www.gps-coordinates.net/'
 
 driver = webdriver.Chrome()
 driver.get(url)
+driver.implicitly_wait(30)
 
 def data_load(path):
     '''Reads a pickle object and loads pandas dataframe object from a given path
@@ -42,15 +43,19 @@ def paste_keys(xpath, text):
     '''
 
     os.system("echo %s| clip" % text.strip())
-    el = driver.find_element_by_xpath(xpath)
-    el.send_keys(Keys.CONTROL, 'v')
+    element = driver.find_element_by_xpath(xpath)
+    element.send_keys(Keys.CONTROL, 'v')
     return None
 
 
-def collect_latlongs(addresslist, xpath):
+def collect_latlongs(addresslist, paste_path):
 
     for address in addresslist:
-        paste_keys(xpath, address)
+        driver.implicitly_wait(5)
+        paste_keys(paste_path, address)
+        python_button = driver.find_element_by_xpath('MainContent_uxLevel1_Agencies_uxAgencyBtn_33') #FHSU
+        python_button.click()
+        
 
     
     return latlonglist
