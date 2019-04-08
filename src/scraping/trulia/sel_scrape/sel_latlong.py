@@ -57,7 +57,7 @@ def paste_keys(xpath, text):
 
 
 def collect_latlongs(addresslist, paste_path, button_path, latlong_path, 
-                wait=10):
+                wait=15):
     '''Takes a list of addresses and for each address retrieves the latitude
     and longitude from the target website using the xpaths given
 
