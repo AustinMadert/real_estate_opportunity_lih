@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import pandas as pd 
 import os
 import pickle
+import time
 
 url = 'https://www.gps-coordinates.net/'
 
@@ -48,10 +49,12 @@ def paste_keys(xpath, text):
     return None
 
 
-def collect_latlongs(addresslist, paste_path, button_path):
+def collect_latlongs(addresslist, paste_path, button_path, lat_path, long_path,
+                    wait=2):
 
     for address in addresslist:
-        driver.implicitly_wait(5)
+        time.sleep(wait)
+
         paste_keys(paste_path, address)
         python_button = driver.find_element_by_xpath(button_path)
         python_button.click()
@@ -63,7 +66,9 @@ def collect_latlongs(addresslist, paste_path, button_path):
 
 def main(pkl_path='../trulscraped_data.pkl', 
         paste_path='//input[@id="address"]',
-        button_path='//button[@class=btn.btn-primary]'):
+        button_path='//button[@class=btn.btn-primary]',
+        lat_path,
+        long_path):
 
 
     addresslist = data_load(pkl_path)
