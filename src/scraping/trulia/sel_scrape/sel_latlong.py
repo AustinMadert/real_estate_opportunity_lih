@@ -1,7 +1,6 @@
 from selenium import webdriver
-#from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-#from bs4 import BeautifulSoup
+from selenium.webdriver.chrome.options import Options
 import pandas as pd 
 import os
 import pickle
@@ -10,7 +9,10 @@ import pyperclip
 
 url = 'https://www.latlong.net/convert-address-to-lat-long.html'
 
-driver = webdriver.Chrome()
+options = Options()
+options.add_argument('--headless')
+
+driver = webdriver.Chrome(options=options)
 driver.get(url)
 driver.implicitly_wait(10)
 
