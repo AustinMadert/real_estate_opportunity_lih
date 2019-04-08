@@ -81,7 +81,7 @@ def collect_latlongs(addresslist, paste_path, button_path, lat_path, long_path,
 
 def main(pkl_path='/Users/austinmadert/galvanize_repositories/\
 real_estate_opportunity_lih/src/scraping/trulia/sel_scrape/trulscraped_df.pkl', 
-        paste_path='//input[@id="address" and @class="form-control_ap-input"]',
+        paste_path='//input[@id="address" and @class="form-control"]',
         button_path='//button[@class=btn_btn-primary and @type="button"]',
         lat_path='//input[@id="latitude" and @class="form-control"]',
         long_path='//input[@id="longitude" and @class="form-control"]'):
