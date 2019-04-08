@@ -1,7 +1,7 @@
 from selenium import webdriver
-from selenium.webdriver.common.by import By
+#from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from bs4 import BeautifulSoup
+#from bs4 import BeautifulSoup
 import pandas as pd 
 import os
 import pickle
@@ -21,7 +21,7 @@ def data_load(pkl_path):
     returns: list of addresses
     '''
 
-    df = pd.read_pickle(path)
+    df = pd.read_pickle(pkl_path)
     return list(df['adj_address'])
 
 
@@ -65,9 +65,16 @@ def collect_latlongs(addresslist, paste_path, button_path, lat_path, long_path,
 
         #copy the lat and long into the result list
         lat_field = driver.find_element_by_xpath(lat_path)
+        lat_field.send_keys(Keys.CONTROL, 'a')#highlight contents of lat box
+        lat_field.send_keys(Keys.CONTROL, 'c')#copy contents of lat box
+        latitude = lat_field.send_keys(pyperclip.paste()) #store contents in var
 
         long_field = driver.find_element_by_xpath(long_path)
+        long_field.send_keys(Keys.CONTROL, 'a')#highlight contents of long box
+        long_field.send_keys(Keys.CONTROL, 'c')#copy contents of long box
+        longitude = long_field.send_keys(pyperclip.paste()) #store contents
 
+        latlonglist.append((latitude, longitude))
     
     return latlonglist
 
@@ -75,12 +82,13 @@ def collect_latlongs(addresslist, paste_path, button_path, lat_path, long_path,
 def main(pkl_path='../trulscraped_data.pkl', 
         paste_path='//input[@id="address"]',
         button_path='//button[@class=btn.btn-primary]',
-        lat_path,
-        long_path):
+        lat_path='//input[@id="latitude]',
+        long_path='//input[@id="longitude"'):
 
 
     addresslist = data_load(pkl_path)
-    latlonglist = collect_latlongs(addresslist, paste_path, button_path)
+    latlonglist = collect_latlongs(addresslist, paste_path, button_path,
+                    lat_path, long_path)
     data_pickle(latlonglist)
 
 
