@@ -6,10 +6,12 @@ import os
 import pickle
 import time
 
-url = 'https://www.latlong.net/convert-address-to-lat-long.html'
+url = 'https://www.mapdevelopers.com/geocode_tool.php'
 
 options = Options()
-options.add_argument('--headless')
+options.add_argument('user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36')
+options.add_experimental_option("prefs", {"profile.default_content_settings.cookies": 2})
+# options.add_argument('--headless')
 
 driver = webdriver.Chrome(options=options)
 driver.get(url)
@@ -56,7 +58,7 @@ def paste_keys(xpath, text):
     return None
 
 
-def collect_latlongs(addresslist, paste_path, button_path, latlong_path, 
+def collect_latlongs(addresslist, paste_path, button_path, lat_path, long_path
                 wait=15):
     '''Takes a list of addresses and for each address retrieves the latitude
     and longitude from the target website using the xpaths given
@@ -77,8 +79,9 @@ def collect_latlongs(addresslist, paste_path, button_path, latlong_path,
             get_button.click()
 
             # retrieve latlong text from the webpage
-            latlong = driver.find_element_by_xpath(latlong_path).text
-            lat, lon = latlong.strip('(').strip(')').split(',')
+            lat = driver.find_element_by_xpath(lat_path).text
+            lon = driver.find_element_by_xpath(long_path).text
+            # lat, lon = latlong.strip('(').strip(')').split(',')
 
             data_export(list((address,lat,lon)))
             print('Successfully appended try ' + str(count) + ' coordinates')
@@ -93,9 +96,10 @@ def collect_latlongs(addresslist, paste_path, button_path, latlong_path,
 
 def main(pkl_path='/Users/austinmadert/galvanize_repositories/\
 real_estate_opportunity_lih/src/scraping/trulia/sel_scrape/trulscraped_df.pkl', 
-        paste_path='//input[@placeholder="Type address here to get lat long"]',
-        button_path='//button[@title="Find lat long coordinates"]',
-        latlong_path='//span[@id="latlngspan" and @class="coordinatetxt"]'):
+        paste_path='//div[@class="input-group hidden-xs"]/input[@class="form-control"]',
+        button_path='//button[@class="btn btn-default"]',
+        lat_path='//div[@id="display_lat"]',
+        long_path='//div[@id="display_lng"]'):
 
     # load dataframe
     addresslist = data_load(pkl_path)
