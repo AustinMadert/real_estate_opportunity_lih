@@ -11,9 +11,10 @@ url = 'https://www.mapdevelopers.com/geocode_tool.php'
 options = Options()
 options.add_argument('user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36')
 options.add_experimental_option("prefs", {"profile.default_content_settings.cookies": 2})
-options.add_argument('--headless')
+# options.add_argument('--headless')
 
 driver = webdriver.Chrome(options=options)
+driver.set_window_position(-10000,0)
 driver.get(url)
 driver.implicitly_wait(10)
 
@@ -34,15 +35,8 @@ def data_export(latlonglist):
     
     returns: None
     '''
-    # filename = 'Users/austinmadert/galvanize_repositories/real_estate_opportunity_lih/src/scraping/trulia/sel_scrape/latlonglist.pkl'
-    # os.makedirs(os.path.dirname(filename), exist_ok=True)
 
-    # with open(filename, 'rb') as rf:
-    #     data = pickle.load(rf)
-
-    # data += latlonglist
-
-    with open('latlonglist', 'wb') as wf:
+    with open('latlonglist.pkl', 'wb') as wf:
         pickle.dump(latlonglist, wf)
 
     return None
@@ -61,7 +55,7 @@ def paste_keys(xpath, text):
 
 
 def collect_latlongs(addresslist, paste_path, button_path, lat_path, long_path,
-                wait=10):
+                wait=5):
     '''Takes a list of addresses and for each address retrieves the latitude
     and longitude from the target website using the xpaths given
 
@@ -83,17 +77,11 @@ def collect_latlongs(addresslist, paste_path, button_path, lat_path, long_path,
         # retrieve latlong text from the webpage
         lat = driver.find_element_by_xpath(lat_path).text
         lon = driver.find_element_by_xpath(long_path).text
-        # lat, lon = latlong.strip('(').strip(')').split(',')
 
 
         latlonglist.append((address, lat, lon))
-        # data_export(list((address,lat,lon)))
         print('Successfully appended try ' + str(count) + ' coordinates')
         count += 1
-
-    
-        # print('ERROR: unsuccessful on try ' + str(count))
-        # count += 1
     
     return latlonglist
 
