@@ -26,7 +26,7 @@ def data_load(pkl_path):
     '''
 
     df = pd.read_pickle(pkl_path)
-    return list(df['adj_address'])
+    return list(df['adj_address'].iloc[:50])
 
 
 def data_export(latlonglist):
@@ -48,8 +48,10 @@ def paste_keys(xpath, text):
 
     returns: None
     '''
-
+    
     element = driver.find_element_by_xpath(xpath)
+    for i in range(50):
+        element.send_keys(Keys.BACKSPACE)
     element.send_keys(text)
     return None
 
@@ -73,6 +75,7 @@ def collect_latlongs(addresslist, paste_path, button_path, lat_path, long_path,
         paste_keys(paste_path, address)
         get_button = driver.find_element_by_xpath(button_path)
         get_button.click()
+        time.sleep(2)
 
         # retrieve latlong text from the webpage
         lat = driver.find_element_by_xpath(lat_path).text
@@ -89,7 +92,7 @@ def collect_latlongs(addresslist, paste_path, button_path, lat_path, long_path,
 def main(pkl_path='/Users/austinmadert/galvanize_repositories/\
 real_estate_opportunity_lih/src/scraping/trulia/sel_scrape/trulscraped_df.pkl', 
         paste_path='//div[@class="input-group hidden-xs"]/input[@class="form-control"]',
-        button_path='//button[@class="btn btn-default"]',
+        button_path='//button[@class="btn btn-default" and @onclick="findAddress();scrollToMap();"]',
         lat_path='//div[@id="display_lat"]',
         long_path='//div[@id="display_lng"]'):
 
