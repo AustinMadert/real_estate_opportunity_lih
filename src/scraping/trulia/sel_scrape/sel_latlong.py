@@ -26,7 +26,7 @@ def data_load(pkl_path):
     '''
 
     df = pd.read_pickle(pkl_path)
-    return list(df['adj_address'].iloc[:50])
+    return list(df['adj_address'])
 
 
 def data_export(latlonglist):
@@ -36,7 +36,7 @@ def data_export(latlonglist):
     returns: None
     '''
 
-    with open('latlonglist.pkl', 'wb') as wf:
+    with open('latlonglist_full.pkl', 'wb') as wf:
         pickle.dump(latlonglist, wf)
 
     return None
