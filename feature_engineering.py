@@ -2,11 +2,8 @@
 # coding: utf-8
 
 import pandas as pd
-import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingRegressor
-import re
-import matplotlib.pyplot as plt
 
 
 def data_imports():
@@ -66,26 +63,61 @@ def clean_dataframes(train_df, geodf):
 
     return train_df, austin_df
 
-def train_compute(train_df, train_X, train_y, compute_df, compute_X, compute_y):
-    tx = train_df[train_X]
-    ty = train_df[train_y]
-    gradboost = GradientBoostingRegressor(learning_rate=0.01, n_estimators=1000)
-    gradboost.fit(tx, ty)
-    compute_df[compute_y] = gradboost.predict(compute_df[compute_X])
-    return None
+def train_compute(train_df, train_features, train_labels, compute_df, compute_X, compute_y):
 
-def boost_dataframe():        
+    X = train_df[train_features]
+    y = train_df[train_labels]
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
+
+    gradboost = GradientBoostingRegressor(learning_rate=0.01, n_estimators=1000)
+    gradboost.fit(X_train, y_train)
+    score = gradboost.score(X_test, y_test)
+    compute_df[compute_y] = gradboost.predict(compute_df[compute_X])
+    
+    return score
+
+def boost_dataframe(train_df, austin_df):        
     #compute price
-    train_compute(newdf, ['latitude', 'longitude', 'price_per_sqft'], 'price', austindf, ['lat', 'lon', 'price_per_sqft'], 'price')
+    price_score = train_compute(
+        train_df,
+        ['latitude', 'longitude', 'price_per_sqft'], 
+        'price',
+        austin_df, 
+        ['lat', 'lon', 'price_per_sqft'], 
+        'price'
+        )
+
     #compute sqft
-    austindf['sqft'] = austindf['price'] / austindf['price_per_sqft']
+    austin_df['sqft'] = austin_df['price'] / austin_df['price_per_sqft']
+
     #compute bathrooms
-    train_compute(newdf, ['latitude', 'longitude', 'price_per_sqft', 'price', 'sqft'], 'bathrooms', austindf, ['lat', 'lon', 'price_per_sqft', 'price', 'sqft'], 'bathrooms')
+    bathroom_score = train_compute(
+        train_df, 
+        ['latitude', 'longitude', 'price_per_sqft', 'price', 'sqft'],
+        'bathrooms', 
+        austin_df, 
+        ['lat', 'lon', 'price_per_sqft', 'price', 'sqft'], 
+        'bathrooms'
+        )
+
     #compute bedrooms
-    train_compute(newdf, ['latitude', 'longitude', 'price_per_sqft', 'price', 'sqft', 'bathrooms'], 'bedrooms', austindf, ['lat', 'lon', 'price_per_sqft', 'price', 'sqft', 'bathrooms'], 'bedrooms')
+    bedroom_score = train_compute(
+        train_df, 
+        ['latitude', 'longitude', 'price_per_sqft', 'price', 'sqft', 'bathrooms'],
+        'bedrooms', 
+        austin_df, 
+        ['lat', 'lon', 'price_per_sqft', 'price', 'sqft', 'bathrooms'], 
+        'bedrooms'
+        )
+
     #force bedrooms into int in order to be conservative in estimate
-    austindf.bedrooms = austindf.bedrooms.astype(int)
-    return austindf
+    austin_df.bedrooms = austin_df.bedrooms.astype(int)
+
+    print('Price score: {}\nBathroom score: {}\nBedroom score: {}'\
+        .format(price_score, bathroom_score, bedroom_score))
+
+    return austin_df
 
 def pickle_dataframe(df, name):
 
@@ -94,8 +126,11 @@ def pickle_dataframe(df, name):
     return None
 
 def main():
-    data_imports()
-
+    train_df, geo_df = data_imports()
+    clean_train, clean_aus = clean_dataframes(train_df, geo_df)
+    boosted_aus = boost_dataframe(clean_train, clean_aus)
+    pickle_dataframe(boosted_aus, 'boosted_dataset_2.pkl')
+    return None
 
 
 
