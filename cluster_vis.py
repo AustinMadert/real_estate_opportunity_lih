@@ -5,7 +5,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
-from math import sin, cos, sqrt, atan2, radians
 from mpl_toolkits.mplot3d import Axes3D
 np.random.seed(5)
 

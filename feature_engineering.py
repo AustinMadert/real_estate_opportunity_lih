@@ -5,6 +5,7 @@ import pandas as pd
 import geopandas as gpd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingRegressor
+from math import sin, cos, sqrt, atan2, radians
 
 
 def data_imports():
@@ -85,9 +86,9 @@ def haversine_to_downtown(point):
     lat, lng = point
     deglen = 110.25
     x = lat - 30.2648
-    y = (lng - (-97.7472))*cos(-97.7472)
+    y = (lng - (-97.7472)) * cos(-97.7472)
 
-    return deglen*sqrt(x*x + y*y)
+    return deglen * sqrt(x*x + y*y)
 
 
 def two_point_haversine(point1, point2):
@@ -95,9 +96,9 @@ def two_point_haversine(point1, point2):
     lat2, lng2 = point2
     deglen = 110.25
     x = lat1 - lat2
-    y = (lng1 - (lng2))*cos(lng2)
+    y = (lng1 - (lng2)) * cos(lng2)
 
-    return deglen*sqrt(x*x + y*y)
+    return deglen * sqrt(x*x + y*y)
 
 
 def train_compute(train_df, train_features, train_labels, compute_df, compute_X, compute_y):
