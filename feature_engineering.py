@@ -2,6 +2,7 @@
 # coding: utf-8
 
 import pandas as pd
+import geopandas as gpd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingRegressor
 
@@ -62,7 +63,41 @@ def clean_dataframes(train_df, geodf):
 
     austin_df = bigdf[bigdf['c_city'] == 'AUSTIN'].copy()
 
+    # get list of coordinates
+    subset = austin_df[['lat', 'lon']]
+    tuples = [tuple(x) for x in subset.values]
+    distances = [haversine_to_downtown(coord) for coord in tuples]
+    austin_df['dist_to_downtown'] = distances
+
+    stops = gpd.read_file('data/Shapefiles_20-_20JANUARY_202018/Stops/Stops.shp')
+    subs = stops[['LATITUDE', 'LONGITUDE']]
+    tups = [tuple(x) for x in subs.values]
+    min_transport_dist = [min([two_point_haversine(stop, address) for stop in tups]) for address in tuples]
+    austin_df['min_dist_to_transport'] = min_transport_dist
+
     return train_df, austin_df
+
+
+def haversine_to_downtown(point):
+    # calculates the distance between two points (lat, lngs) on a great circle, or on the 
+    # surface of a sphere (in this case the sphere is planet earth)
+    # units in km
+    lat, lng = point
+    deglen = 110.25
+    x = lat - 30.2648
+    y = (lng - (-97.7472))*cos(-97.7472)
+
+    return deglen*sqrt(x*x + y*y)
+
+
+def two_point_haversine(point1, point2):
+    lat1, lng1 = point1
+    lat2, lng2 = point2
+    deglen = 110.25
+    x = lat1 - lat2
+    y = (lng1 - (lng2))*cos(lng2)
+
+    return deglen*sqrt(x*x + y*y)
 
 
 def train_compute(train_df, train_features, train_labels, compute_df, compute_X, compute_y):
@@ -116,6 +151,7 @@ def boost_dataframe(train_df, austin_df):
 
     #force bedrooms into int in order to be conservative in estimate
     austin_df.bedrooms = austin_df.bedrooms.astype(int)
+    austin_df['price_per_bed'] = austin_df['price'] / austin_df['bedrooms']
 
     print('Price score: {}\nBathroom score: {}\nBedroom score: {}'\
         .format(price_score, bathroom_score, bedroom_score))
@@ -123,52 +159,11 @@ def boost_dataframe(train_df, austin_df):
     return austin_df
 
 
-def haversine_to_downtown(point):
-    # calculates the distance between two points (lat, lngs) on a great circle, or on the 
-    # surface of a sphere (in this case the sphere is planet earth)
-    # units in km
-    lat, lng = point
-    deglen = 110.25
-    x = lat - 30.2648
-    y = (lng - (-97.7472))*cos(-97.7472)
-
-    return deglen*sqrt(x*x + y*y)
-
-
-def two_point_haversine(point1, point2):
-    lat1, lng1 = point1
-    lat2, lng2 = point2
-    deglen = 110.25
-    x = lat1 - lat2
-    y = (lng1 - (lng2))*cos(lng2)
-
-    return deglen*sqrt(x*x + y*y)
-
-
 def pickle_dataframe(df, name):
 
     df.to_pickle(name)
 
     return None
-
-# get list of coordinates
-subset = df[['lat', 'lon']]
-tuples = [tuple(x) for x in subset.values]
-
-distances = [haversine_to_downtown(coord) for coord in tuples]
-
-df['dist_to_downtown'] = distances
-
-df['price_per_bed'] = df['price'] / df['bedrooms']
-
-stops = gpd.read_file('data/Shapefiles_20-_20JANUARY_202018/Stops/Stops.shp')
-
-subs = stops[['LATITUDE', 'LONGITUDE']]
-tups = [tuple(x) for x in subs.values]
-
-min_transport_dist = [min([two_point_haversine(stop, address) for stop in tups]) for address in tuples]
-
-df['min_dist_to_transport'] = min_transport_dist
 
 
 def main():

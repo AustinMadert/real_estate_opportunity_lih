@@ -4,7 +4,6 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import geopandas as gpd
 from sklearn.cluster import KMeans
 from math import sin, cos, sqrt, atan2, radians
 from mpl_toolkits.mplot3d import Axes3D
@@ -12,13 +11,6 @@ np.random.seed(5)
 
 df = pd.read_pickle('boosted_dataset.pkl')
 
-# get list of coordinates
-subset = df[['lat', 'lon']]
-tuples = [tuple(x) for x in subset.values]
-
-distances = [haversine_to_downtown(coord) for coord in tuples]
-
-df['dist_to_downtown'] = distances
 
 X = df[['dist_to_downtown', 'price_per_sqft', 'bedrooms']].values
 
