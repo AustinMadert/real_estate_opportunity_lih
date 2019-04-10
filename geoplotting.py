@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
 
 
 from mpl_toolkits.basemap import Basemap
@@ -19,71 +18,41 @@ import matplotlib.cm as cm
 import matplotlib.colors as colors
 import geopandas as gpd
 from sklearn.model_selection import train_test_split
-get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[2]:
+df = pd.read_pickle('boosted_dataset.pkl')
 
 
-df = pd.read_pickle('out_from_cluster_into_geoplotting.pkl')
-
-
-# In[3]:
-
-
-df.head()
-
-
-# In[4]:
-
-
-stops = gpd.read_file('data/Shapefiles_20-_20JANUARY_202018/Stops/Stops.shp')
-
-
-# In[5]:
-
-
-stops.plot(figsize=(12,12));
-print('Total number of bus stops: ' + str(stops[stops['STOP_TYPE'] == 'Bus Stop'].shape[0]))
-
-
-# In[6]:
 
 
 cluster = KMeans(n_clusters=3)
 
 
-# In[7]:
 
 
 X = df[['min_dist_to_transport', 'price_per_bed', 'price_per_sqft']]
 
 
-# In[8]:
 
 
 cluster.fit(X)
 
 
-# In[9]:
 
 
 df['labels'] = cluster.labels_
 
 
-# In[10]:
 
 
 X_train, X_test = train_test_split(df, test_size=0.01, stratify=df['labels'])
 
 
-# In[11]:
 
 
 df.head()
 
 
-# In[12]:
 
 
 # # Read in data.
@@ -133,7 +102,6 @@ df.head()
 # ;
 
 
-# In[13]:
 
 
 # Read in data.
@@ -197,13 +165,11 @@ m.drawrivers(linewidth=1, color='b')
 ("")
 
 
-# In[15]:
 
 
 X_train2, X_test2 = train_test_split(df, test_size=0.1, stratify=df['labels'])
 
 
-# In[17]:
 
 
 # Read in data.
@@ -267,7 +233,6 @@ m.drawrivers(linewidth=1, color='b')
 ("")
 
 
-# In[ ]:
 
 
 

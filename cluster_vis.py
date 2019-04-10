@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.axes import Axes
+from joblib import dump
 np.random.seed(5)
 
 class cluster_visualizer():
@@ -30,6 +31,7 @@ class cluster_visualizer():
         self.x_label='Latitude'
         self.y_label='Longitude'
         self.z_label='Price/Sqft'
+        self.model=None
 
 
     def three_dimension_plot(self, rect=[0, 0, 1, 1], elev=48, azim=134):
@@ -41,6 +43,7 @@ class cluster_visualizer():
             fig = plt.figure(fignum, figsize=(12, 12))
             ax = Axes3D(fig, rect=rect, elev=elev, azim=azim)
             est.fit(X)
+            self.model = est
             labels = est.labels_
 
             ax.scatter(X[:, 0], X[:, 1], X[:, 2],
@@ -70,6 +73,7 @@ class cluster_visualizer():
             fig = plt.figure(fignum, figsize=(12, 12))
             ax = Axes(fig, rect=rect)
             est.fit(X)
+            self.model = est
             labels = est.labels_
 
             ax.scatter(X[:, 0], X[:, 1],
@@ -86,6 +90,14 @@ class cluster_visualizer():
         fig.show()
 
         return None
+    
+
+    def dump_model(self, filename='joblib_outputs/cluster_vis_model.joblib'):
+
+        dump(self.model, filename)
+
+        return None
+
 
 
 

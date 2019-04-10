@@ -171,7 +171,7 @@ def main():
     train_df, geo_df = data_imports()
     clean_train, clean_aus = clean_dataframes(train_df, geo_df)
     boosted_aus = boost_dataframe(clean_train, clean_aus)
-    pickle_dataframe(boosted_aus, 'boosted_dataset_2.pkl')
+    pickle_dataframe(boosted_aus, 'boosted_dataset.pkl')
     return None
 
 
