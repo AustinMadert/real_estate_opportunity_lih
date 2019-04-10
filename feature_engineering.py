@@ -9,13 +9,21 @@ import re
 import matplotlib.pyplot as plt
 
 
-pricedf = pd.read_pickle('src/scraping/trulia/sel_scrape/trulscraped_df.pkl')
-geodf = pd.read_csv('data/Austin_addresses.csv')
-lldf = pd.read_pickle('src/scraping/trulia/sel_scrape/latlonglist_full.pkl')
+def data_imports():
+    prices = pd.read_pickle('src/scraping/trulia/sel_scrape/trulscraped_df.pkl')
+    geodf = pd.read_csv('data/Austin_addresses.csv')
+    lls = pd.read_pickle('src/scraping/trulia/sel_scrape/latlonglist_full.pkl')
 
-lldf = pd.DataFrame(lldf, columns=['address', 'latitude', 'longitude'])
-pricedf = pd.DataFrame(pricedf, columns=['address', 'bathrooms', 'bedrooms', 'city_state_zip', 'house_type', 'price', 'sqft', 'url', 'price_per_sqft', 'adj_address', 'apts'])
-newdf = lldf.merge(pricedf, left_on='address', right_on='adj_address', how='left')
+    lldf = pd.DataFrame(lls, columns=['address', 'latitude', 'longitude'])
+    pricedf = pd.DataFrame(prices, columns=['address', 'bathrooms', 'bedrooms', \
+        'city_state_zip', 'house_type', 'price', 'sqft', 'url', 'price_per_sqft', \
+        'adj_address', 'apts'])
+    newdf = lldf.merge(pricedf, left_on='address', right_on='adj_address', how='left')
+
+    return [lldf, pricedf, newdf]
+
+def clean_dataframes():
+    
 
 newdf.drop(newdf[newdf['bedrooms'] == 'Lot/Land'].index, inplace=True)
 newdf.drop(newdf[newdf['bathrooms'] == 'Condo'].index, inplace=True)
@@ -65,8 +73,6 @@ bigdf.drop(columns='index', inplace=True)
 
 austindf = bigdf[bigdf['c_city'] == 'AUSTIN'].copy()
 
-austindf['price_per_sqft_gboost'] = gboost.predict(austindf[['lat', 'lon']])
-
 testdf = newdf[['latitude', 'longitude', 'price_per_sqft','price']].copy()
 
 def train_compute(train_df, train_X, train_y, compute_df, compute_X, compute_y):
@@ -76,22 +82,34 @@ def train_compute(train_df, train_X, train_y, compute_df, compute_X, compute_y):
     gradboost.fit(tx, ty)
     compute_df[compute_y] = gradboost.predict(compute_df[compute_X])
     return None
+
+def boost_dataframe():        
+    #compute price
+    train_compute(newdf, ['latitude', 'longitude', 'price_per_sqft'], 'price', austindf, ['lat', 'lon', 'price_per_sqft'], 'price')
+    #compute sqft
+    austindf['sqft'] = austindf['price'] / austindf['price_per_sqft']
+    #compute bathrooms
+    train_compute(newdf, ['latitude', 'longitude', 'price_per_sqft', 'price', 'sqft'], 'bathrooms', austindf, ['lat', 'lon', 'price_per_sqft', 'price', 'sqft'], 'bathrooms')
+    #compute bedrooms
+    train_compute(newdf, ['latitude', 'longitude', 'price_per_sqft', 'price', 'sqft', 'bathrooms'], 'bedrooms', austindf, ['lat', 'lon', 'price_per_sqft', 'price', 'sqft', 'bathrooms'], 'bedrooms')
+    #force bedrooms into int in order to be conservative in estimate
+    austindf.bedrooms = austindf.bedrooms.astype(int)
+    return austindf
+
+def pickle_dataframe(df, name):
+
+    df.to_pickle(name)
+
+    return None
+
+def main():
+    data_imports()
     
-#compute price
-train_compute(newdf, ['latitude', 'longitude', 'price_per_sqft'], 'price', austindf, ['lat', 'lon', 'price_per_sqft'], 'price')
-#compute sqft
-austindf['sqft'] = austindf['price'] / austindf['price_per_sqft']
-#compute bathrooms
-train_compute(newdf, ['latitude', 'longitude', 'price_per_sqft', 'price', 'sqft'], 'bathrooms', austindf, ['lat', 'lon', 'price_per_sqft', 'price', 'sqft'], 'bathrooms')
-#compute bedrooms
-train_compute(newdf, ['latitude', 'longitude', 'price_per_sqft', 'price', 'sqft', 'bathrooms'], 'bedrooms', austindf, ['lat', 'lon', 'price_per_sqft', 'price', 'sqft', 'bathrooms'], 'bedrooms')
-#force bedrooms into int in order to be conservative in estimate
-austindf.bedrooms = austindf.bedrooms.astype(int)
-
-austindf.to_pickle('boosted_dataset.pkl')
 
 
 
+if __name__ == '__main__':
+    main()
 
 
 
