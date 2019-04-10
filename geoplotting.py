@@ -17,21 +17,16 @@ import geopandas as gpd
 from sklearn.model_selection import train_test_split
 
 
-def create_geoplot():
+def create_geoplot(df, lowerlon=-98.10, upperlon=-97.47, lowerlat = 30.11, upperlat = 30.55,
+        shapefile_dir = "data/cb_2017_us_zcta510_500k", sample_data=True, sample_size=0.1):
 
-    X_train, X_test = train_test_split(df, test_size=0.1, stratify=df['labels'])
+    if sample_data:
+        X_train, X_test = train_test_split(df, test_size=sample_size, stratify=df['labels'])
 
     # Read in data.
     colormap = plt.cm.Purples 
 
-    aus_stop_file_dir = "data/cb_2017_us_zcta510_500k"
-    os.chdir(aus_stop_file_dir)
-
-    # Austin coordinates.
-    lowerlon = -98.10 
-    upperlon = -97.47
-    lowerlat = 30.11
-    upperlat = 30.55
+    os.chdir(shapefile_dir)
 
     fig = plt.figure(figsize=(12,12))
     m = Basemap(
@@ -47,12 +42,11 @@ def create_geoplot():
         lon_1=upperlon
         )
 
-    shp_info = m.readshapefile(os.path.basename(aus_stop_file_dir), 'state')
+    shp_info = m.readshapefile(os.path.basename(shapefile_dir), 'state')
 
     lats = X_test['lat'].to_numpy()
     lons = X_test['lon'].to_numpy()
     labels = X_test['labels'].to_numpy()
-    # tuples = [tuple(x) for x in subset.values]
 
     colors = []
     for i in labels:
@@ -66,17 +60,9 @@ def create_geoplot():
     x, y = m(lons, lats)
     plt.scatter(x, y, 12, marker='o', color=colors)
 
+    m.drawrivers(linewidth=1, color='b')
 
-# for i in tuples:
-#     if i[2] == 0:
-#         color='b'
-#     elif i[2] == 1:
-#         color='r'
-#     else:
-#         color='y'
-#     m.scatter(i[0], i[1], color=color, zorder=5)
+    fig.show()
 
-
-
-m.drawrivers(linewidth=1, color='b')
+    return None
 
