@@ -6,7 +6,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from mpl_toolkits.mplot3d import Axes3D
-from matplotlib.axes import Axes
 from joblib import dump
 np.random.seed(5)
 
@@ -70,8 +69,7 @@ class cluster_visualizer():
         fignum = 1
 
         for name, est in self.estimators:
-            fig = plt.figure(fignum, figsize=(12, 12))
-            ax = Axes(fig, rect=rect)
+            fig, ax = plt.subplots(fignum, figsize=(12, 12))
             est.fit(X)
             self.model = est
             labels = est.labels_
