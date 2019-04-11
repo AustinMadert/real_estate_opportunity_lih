@@ -62,13 +62,14 @@ def clean_dataframes(train_df, geodf):
          ' ' + bigdf.iloc[207,4] + ' ' + bigdf.iloc[207,5] +\
          ' ' + bigdf.iloc[207,6]
 
-    austin_df = bigdf[bigdf['c_city'] == 'AUSTIN'].copy()
+    city_df = bigdf[bigdf['c_city'] == 'AUSTIN'].copy()
 
     # get list of coordinates
-    subset = austin_df[['lat', 'lon']]
+    subset = city_df[['lat', 'lon']]
     tuples = [tuple(x) for x in subset.values]
     distances = [haversine_to_downtown(coord) for coord in tuples]
-    austin_df['dist_to_downtown'] = distances
+    city_df['dist_to_downtown'] = distances
+    austin_df = city_df[city_df['dist_to_downtown'] < (city_df.dist_to_downtown.std() * 4)].copy()
 
     stops = gpd.read_file('data/Shapefiles_20-_20JANUARY_202018/Stops/Stops.shp')
     subs = stops[['LATITUDE', 'LONGITUDE']]
