@@ -121,14 +121,19 @@ def train_compute(train_df, train_features, train_labels, compute_df, compute_X,
 
 def boost_dataframe():        
     
-    fl1 = open('train_df.pkl')
-    train_df = loads(fl1)
-    fl1.close()
-
-    fl2 = open('intown_df.pkl')
-    intown_df = loads(fl2)
-    fl2.close()
+    train_df = pd.read_pickle('train_df.pkl')
+    intown_df = pd.read_pickle('intown_df.pkl')
     
+    #compute price/sqft
+    price_per_sqft_score = train_compute(
+        train_df,
+        ['latitude', 'longitude'],
+        'price_per_sqft',
+        intown_df,
+        ['lat', 'lon'],
+        'price_per_sqft'
+    )
+
     #compute price
     price_score = train_compute(
         train_df,
@@ -166,8 +171,8 @@ def boost_dataframe():
     intown_df.bedrooms = intown_df.bedrooms.astype(int)
     intown_df['price_per_bed'] = intown_df['price'] / intown_df['bedrooms']
 
-    print('Price score: {}\nBathroom score: {}\nBedroom score: {}'\
-        .format(price_score, bathroom_score, bedroom_score))
+    print('Price/Sqft score: {}\nPrice score: {}\nBathroom score: {}\nBedroom score: {}'\
+        .format(price_per_sqft_score, price_score, bathroom_score, bedroom_score))
 
     return intown_df
 
