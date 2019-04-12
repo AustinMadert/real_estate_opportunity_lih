@@ -46,7 +46,7 @@ def create_geoplot(df, lowerlon=-98.10, upperlon=-97.47, lowerlat = 30.11, upper
 
     lats = X_test['lat'].to_numpy()
     lons = X_test['lon'].to_numpy()
-    labels = X_test['labels'].to_numpy()
+    #labels = X_test['labels'].to_numpy()
 
     x, y = m(lons, lats)
     plt.scatter(x, y, 12, marker='o', color=colors)
