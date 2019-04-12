@@ -42,7 +42,7 @@ def create_geoplot(df, lowerlon=-98.10, upperlon=-97.47, lowerlat = 30.11, upper
         )
 
     shp_info = m.readshapefile(os.path.basename(shapefile_dir), 'state')
-    m.fillcontinents(color='#216309', alpha=0.2)
+    m.fillcontinents(color='#216309', alpha=0.35)
 
     lats = X_test['lat'].to_numpy()
     lons = X_test['lon'].to_numpy()

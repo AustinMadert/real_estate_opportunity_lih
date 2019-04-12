@@ -2,6 +2,7 @@
 # coding: utf-8
 
 import pandas as pd
+import numpy as np
 import geopandas as gpd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingRegressor
@@ -9,6 +10,7 @@ from math import sin, cos, sqrt, atan2, radians
 from pickle import loads
 import warnings
 warnings.filterwarnings('ignore')
+np.random.seed(5)
 
 
 def data_imports():
