@@ -121,7 +121,7 @@ def train_compute(train_df, train_features, train_labels, compute_df, compute_X,
     return score
 
 
-def boost_dataframe():        
+def boost_dataframe(gridsearchflag=False):        
     
     train_df = pd.read_pickle('train_df.pkl')
     intown_df = pd.read_pickle('intown_df.pkl')
@@ -178,6 +178,9 @@ def boost_dataframe():
 
     return intown_df
 
+def searcher(df, parameter_space):
+
+    return clf.get_params
 
 def pickle_dataframe(df, name):
 
@@ -194,8 +197,13 @@ def main():
         boosted_aus = boost_dataframe()
         pickle_dataframe(boosted_aus, 'boosted_dataset.pkl')
     else:
-        boosted_aus = boost_dataframe()
-        pickle_dataframe(boosted_aus, 'boosted_dataset.pkl')
+        response2 = input('Use gridsearch? ')
+        if response2 == 'y':
+            boosted_aus = boost_dataframe(gridsearchflag=True)
+            pickle_dataframe(boosted_aus, 'boosted_dataset.pkl')
+        else:
+            boosted_aus = boost_dataframe()
+            pickle_dataframe(boosted_aus, 'boosted_dataset.pkl')
     
     return None
 
