@@ -81,36 +81,94 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
     def __init__(self, user_agent=''):
         self.user_agent = user_agent
 
+        #the default user_agent_list composes chrome,I E,firefox,Mozilla,opera,netscape
+        #for more user agent strings,you can find it in http://www.useragentstring.com/pages/useragentstring.php
+        self.user_agent_list = [\
+        'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0',\
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0',\
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',\
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1',\
+        'Mozilla/5.0 (X11; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0',\
+       ]
+
     def process_request(self, request, spider):
         ua = random.choice(self.user_agent_list)
         if ua:
             request.headers.setdefault('User-Agent', ua)
 
             # Adding logging message here.
-            spider.log(
-                u'User-Agent: {} {}'.format(request.headers.get('User-Agent'), request),
-                level=spider.logger.DEBUG
-            )
+            spider.log(u'User-Agent: {} {}'.format(request.headers.get('User-Agent'), request))
 
-    #the default user_agent_list composes chrome,I E,firefox,Mozilla,opera,netscape
-    #for more user agent strings,you can find it in http://www.useragentstring.com/pages/useragentstring.php
-    user_agent_list = [\
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1"\
-        "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11",\
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.6 (KHTML, like Gecko) Chrome/20.0.1092.0 Safari/536.6",\
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.6 (KHTML, like Gecko) Chrome/20.0.1090.0 Safari/536.6",\
-        "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/19.77.34.5 Safari/537.1",\
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5",\
-        "Mozilla/5.0 (Windows NT 6.0) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.36 Safari/536.5",\
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",\
-        "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",\
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_0) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",\
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",\
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",\
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",\
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",\
-        "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",\
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.0 Safari/536.3",\
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24",\
-        "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24"
-       ]
+class ProxiesMiddleware(object):
+    def __init__(self, settings):
+        # self.proxies = [      
+        #     '192.99.203.93:35289',
+        #     '67.205.174.209:1080',
+        #     '198.199.120.102:1080',
+        #     '68.183.126.25:8888',
+        #     '165.227.215.71:1080',
+        #     '67.205.146.29:1080',
+        #     '165.227.215.62:1080',
+        #     '162.243.107.120:1080',
+        #     '159.203.91.6:1080',
+        #     '159.203.166.41:1080',
+        #     '174.138.54.49:1080',
+        #     '162.243.108.129:1080',
+        #     '138.197.108.5:3128',
+        #     '67.205.149.230:1080',
+        #     '192.241.245.207:1080',
+        #     '216.27.126.86:39072',
+        #     '67.205.132.241:1080',
+        #     '162.243.108.161:1080',
+        #     '74.101.171.218:54321',
+        #     '40.76.78.215:80',
+        #     '68.188.59.198:80',
+        #     '148.153.11.58:39593',
+        #     '207.97.174.134:1080',
+        #     '162.243.108.141:1080',
+        #     '72.87.113.190:39593',
+        #     '23.95.0.140:24890',
+        #     '98.221.88.193:64312',
+        #     '24.0.241.151:64312',
+        #     '104.237.227.198:54321',
+        #     '72.89.243.220:64312',
+        #     '50.253.49.189:54321',
+        #     '66.9.8.123:64312',
+        #     '148.77.34.194:54321',
+        #     '66.244.86.186:64312',
+        #     '72.43.17.222:4455'
+        #     ]
+        self.proxies = [
+            'http://54.242.190.101:80',
+            'http://66.82.22.79:80',
+            'http://161.202.136.141:80',
+            'http://167.99.137.253:80',
+            'http://157.230.87.121:80',
+            'http://198.183.157.52:80',
+            'http://8.38.238.212:80',
+            'http://65.210.76.8	3128',
+            'http://54.37.31.169:80',
+            'http://40.68.149.233:8080',
+            'http://52.194.230.130:8080',
+            'http://167.99.137.251:80',
+            'http://68.107.176.152:80',
+            'http://173.45.238.23:80',
+            'http://198.74.57.231:80',
+            'http://209.205.212.34:1687',
+            'http://209.205.212.34:1560',
+            'http://192.225.214.132:80',
+            'http://74.208.123.225:3128',
+            'http://138.68.53.44:8118',
+            'http://45.55.9.218:8080',
+            'http://138.128.242.193:8138',
+            'http://138.128.242.68:8138'
+            ]
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler.settings)
+
+    def process_request(self, request, spider):
+        pp = random.choice(self.proxies)
+        request.meta['proxy'] = pp
+

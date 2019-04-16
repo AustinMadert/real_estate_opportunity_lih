@@ -4,6 +4,7 @@
 *.exe
 *.o
 *.so
+*.DS_store
 
 # Packages #
 ############
@@ -26,8 +27,11 @@
 *.sql
 *.sqlite
 *.csv
+data/
+crawl1/
+Shapefiles_20-_20JANUARY_202018/
 
 # IPython Notebooks #
 ######################
 *.ipynb_checkpoints
-*.ipynb
+#*.ipynb
