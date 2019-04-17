@@ -8,10 +8,8 @@ from scrapy.crawler import CrawlerProcess
 import json
 import re
 
-# from trulia.items import TruItem
+
 class TruItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
     address = scrapy.Field()
     price = scrapy.Field()
     sqft = scrapy.Field()
@@ -20,25 +18,16 @@ class TruItem(scrapy.Item):
     bathrooms = scrapy.Field()
     city_state_zip = scrapy.Field()
     url = scrapy.Field()
-    #listing_id = scrapy.Field()
+
 
 query = 'TX/Austin/'
+
 
 class TrulSpider(scrapy.Spider):
     name = 'truliaspider'
     allowed_domains = ["trulia.com"]
     start_urls = ['https://www.trulia.com/'+query]
 
-    # def last_pagenumber_in_search(self, response):
-    #     try:							
-    #         last_p = response.xpath('//div[@class="txtC"]/a[contains(text(),"Last")]/@href').extract()
-    #         last_p_split = last_p[0].split('/')
-    #         almost_page = last_p_split[-2]
-    #         almost_there = almost_page.split('_p')
-    #         last_page = int(almost_there[0])
-    #         return last_page
-    #     except:
-    #         return 1
 
     def parse(self,response):
         last_page_number = 135 #self.last_pagenumber_in_search(response)
@@ -57,22 +46,9 @@ class TrulSpider(scrapy.Spider):
 
     
 
-
-    # def json_extract(x):
-    # 	x_list = re.split(';',x[0])
-    # 	x_json_list=re.split('trulia.pdp.propertyJSON = ',x_list[2])
-    # 	return x_json_list[1]
-
     def parse_listing_contents(self, response):
         item = TruItem()
 
-        #res = response.xpath('//script[@type="text/javascript" and contains(text(),"trulia.pdp.propertyJSON")]').extract()
-        # if res:
-        #     res_list = re.split(';',res[0])
-        #     res_json_list=re.split('trulia.pdp.propertyJSON = ',res_list[2])
-        #     json_content = res_json_list[1]
-            
-            # trulia_json = json.loads(json_content)
         bbsqft = response.xpath('//ul[@class="man"]/li/text()').getall()
         if bbsqft:
             try:
@@ -124,8 +100,6 @@ class TrulSpider(scrapy.Spider):
         
         item['url'] = response.url
         yield item
-
-        
 
 
 

@@ -18,6 +18,7 @@ driver.set_window_position(-10000,0)
 driver.get(url)
 driver.implicitly_wait(10)
 
+
 def data_load(pkl_path):
     '''Reads a pickle object and loads pandas dataframe object from a given path
     and then converts a slice of the dataframe for addresses into a list object
