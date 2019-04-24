@@ -9,5 +9,7 @@ would be to a potential housing program. The project uses three main factors to 
  - Distance to public transportation
  - Relative dispersion across the city
 
- The workflow is split across multiple jupyter notebooks located in the 'notebooks' folder. Additionally, scrapers and 
- helper functions can be found in the src and helper_functions folders respetively.
+ For a more in-depth walkthrough of the project, visit the <a href=Project_Walkthrough.md>project walkthrough markdown </a>
+
+ The workflow is split across multiple working jupyter notebooks located in the 'notebooks' folder. Additionally, scrapers and 
+ helper functions can be found in the src and helper_functions folders respectively.
