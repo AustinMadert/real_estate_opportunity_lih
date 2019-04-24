@@ -1,4 +1,4 @@
-# Identifying Real Estate Opportunity for Low Income Housing Programs
+# Project Overview and Walkthrough
 
 Data acquisition
 - using scrapy
