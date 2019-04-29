@@ -17,19 +17,49 @@ model.
 
 ## Data acquisition
 
+
+### Trulia and Scrapy
+
 I began my work with the help of another project featured in the <a href='https://nycdatascience.com/blog/student-works/scraping-trulia-zillow/'>NYC Data Science Academy blog</a> that detailed both an approach to scraping zillow using selenium
 as well as a trulia spider using the scrapy library. I had never seen the scrapy library and the article (written in 2017)
 made the process of scraping Trulia seem simple. To make a long and somewhat frustrating story shorter, Trulia does a very
-good job of protecting their data (which makes sense given that scraping is against their terms of service). 
+good job of protecting their data (which makes sense given that scraping is against their terms of service). They had also
+made changes to how they stored data on their listing pages to where I needed to heavily modify the spider in the original
+post. 
+
+Additionally, scrapy has functionality to throttle the delay on get requests in order to limit how much strain you spider
+puts on the server. The AutoThrottle functionality that comes with scrapy adjusts request timing based on download latency
+and so this doesn't mimick human browsing behavior closely. To achieve that, I borrowed from another <a href='https://mikulskibartosz.name/making-your-scrapy-spider-undetectably-by-applying-basic-statistics-feba515ab04c'>article on 
+medium written by Bartosz Mikulski</a>. He modified the autothrottle functionality of scrapy to include delays based on
+random variables sampled from the exponential distribution, which tend to create a pattern similar to human browsing. 
+
+Lastly, I used proxy servers to send get requests to the Trulia website which allowed me to use an IP address other than
+the one on my home router. Trulia will very quickly block your requests if they can identify rapid and repeated requests 
+from the same IP address. You can find free proxy servers via a simple google search and impliment them as I have done in
+the <a href='src/scraping/trulia/middlewares.py'>middlewares utilities</a> located in the src folder in this repo. There
+also you will find the 'RotateUserAgentMiddleware' class that I used to change the header on the get requests dynamically.
+If you are new to scrapy, these middlewares and other settings on the spider get controlled by the <a href='src/scraping/trulia/settings.py'>settings file</a>, so I recommend parusing the src folder to familiarize yourself with the structure of a
+scrapy project, or you can read the <a href='https://docs.scrapy.org/en/latest/index.html'>documentation on their site.</a>
 
 
+### Selenium
 
-- using scrapy
-    - link the trulia scrapy repo
-    - link the time delay repo
-- selenium
-- full address list and lat longs
-    - gradient boosted regression tree
+Using my spider, I was able to scrape nearly 700 home listings from Trulia, however they didn't come with latitudes and 
+longitudes. So, for that I created a <a href='src/scraping/trulia/sel_scrape/selenium_latlong.py'>separate scraper using 
+the selenium webdriver</a>. From there I was able to merge the coordinates with the original data and create a dataset with
+coordinates as well as home values and other specifics!
+
+
+### Boosting
+
+Having worked hard to get to this point, I recognize that it is not possible to create an intelligent housing program based 
+solely on only 700 homes worth of data. It's at this point that I leveraged the help of a colleague who had a dataset of 
+a large majority of the addresses for properties in Austin, complete with zip codes. I took the <a href='https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor'>Gradient 
+Boosting Regressor from sci-kit learn</a> and trained it on my small trulia dataset. I was then able to regress the price,
+price per sqft, sqft, bedrooms, and bathrooms onto the larger dataset. By doing this I was able to make an approximation 
+of what I would have liked to have been able to scrape from Trulia. From this point I was ready to begin the process of 
+feature engineering.
+
 
 ## Feature engineering
 - distance to transportation
