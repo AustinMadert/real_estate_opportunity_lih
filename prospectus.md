@@ -15,7 +15,7 @@ Specifically, the project would seek to answer the questions:
 Since studies in public housing have shown that large centralized complexes known as housing projects have led to increased crime, drug use,
 lower performance in schools, a more decentralized model has become common in cities. Modern public housing programs include properties spread across cities and surrounding areas to better assimilate the lower income tenants. 
 
-Other projects have used machine learning to generate models that map rent decay from dense city centers with little available data. This is project accomplished this using data from the metropolitan of Guangzhou, China: https://www.sciencedirect.com/science/article/abs/pii/S0143622816303204
+Other projects have used machine learning to generate models that map rent decay from dense city centers with little available data. This project accomplished this using data from the metropolitan of Guangzhou, China: https://www.sciencedirect.com/science/article/abs/pii/S0143622816303204
 
 There is also a more qualitative body of work that seeks to leverage learnings from city management learnings from around the world that form a strong foundation for how to improve models that I generate: http://housingsupply.our.dmu.ac.uk/files/2014/03/ESRC-Report-FINAL.pdf
 

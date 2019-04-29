@@ -38,8 +38,8 @@ the one on my home router. Trulia will very quickly block your requests if they 
 from the same IP address. You can find free proxy servers via a simple google search and impliment them as I have done in
 the <a href='src/scraping/trulia/middlewares.py'>middlewares utilities</a> located in the src folder in this repo. There
 also you will find the 'RotateUserAgentMiddleware' class that I used to change the header on the get requests dynamically.
-If you are new to scrapy, these middlewares and other settings on the spider get controlled by the <a href='src/scraping/trulia/settings.py'>settings file</a>, so I recommend parusing the src folder to familiarize yourself with the structure of a
-scrapy project, or you can read the <a href='https://docs.scrapy.org/en/latest/index.html'>documentation on their site.</a>
+If you are new to scrapy, these middlewares and other settings on the spider get controlled by the <a href='src/scraping/trulia/settings.py'>settings file</a>, so I recommend parusing the <a href='src/scraping/trulia'>scraping folder</a> to familiarize 
+yourself with the structure of a scrapy project, or you can read the <a href='https://docs.scrapy.org/en/latest/index.html'>documentation on their site.</a>
 
 
 ### Selenium
@@ -69,9 +69,60 @@ my purposes. Having generated the data, I was ready to begin the process of feat
 
 
 ## Feature engineering
-- distance to transportation
-- clustering
-- price per sqft
+
+My next step was to address the problem at hand, which was to identify the best properties within the dataset for a low 
+income housing program. Of obvious importance is price efficiency. Lower cost properties would obviously be better for 
+any program that has a pre-defined budget. It also seemed relevant to explore other factors as a simple ranking of the 
+price of properties in Austin would be both uninsightful and would likely result in a selection of properties far away 
+from anything important (i.e. on the outskirts of town). Since we can assume that the potential occupants would likely be
+financially limited, it made sense to favor properties that were close to public transportation. Additionally, in my 
+research I found that modern low income housing programs have sought to disperse the controlled properties across an area
+to avoid creating projects. Studies have shown that a concentration of this time of housing can lead to increased crime
+and lower educational performance in those areas. So, it made sense to favor properties that were relatively dispersed 
+across the city. 
+
+
+### Price per sqft
+
+As is unsurprising, a heatmap shows that prices are highest in the downtown area of Austin and decrease to the north and 
+south. 
+
+Price needed to be factored into the model and price per sqft was a better way to observe efficiency than total price. 
+Price per bedroom was also considered, however there seemed to be little difference in favoring one metric over the other
+and price per sqft is stable relative to location, so this was the metric of choice. 
+
+
+### Distance to Public Transportation
+
+The <a href='https://data.austintexas.gov/'>city of Austin open data portal</a> had a helpful dataset including the coordinates
+to all bus stops within the city. I plotted those below to give an idea of what we were working with:
+
+Given that I had access to the locations of bus stops and potential properties, I was
+able to calculate the distance between each property and each bus stop and find the minimum distance to transportation for
+each address. Given that I was using latitudes and longitudes, I used the haversine distance calculation which gives the
+distance between two points on a great circle. This is the same as calculating the distance between two points on the 
+surface of a sphere, which in this case was planet Earth. 
+
+I have the functions I used for these calculations, along with other helper functions in the <a href='helper_functions/featuring_engineering.py'>helper functions folder</a> of this repo.
+
+
+### Clustering
+
+The third factor to include in the model was relative dispersion of the potential properties. To achieve this, I used the
+<a href='https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html'>sci-kit learn K-Means clustering</a>
+algorithm to cluster all the properties by only two dimension: latitude and longitude. This created a set of clusters that
+groups properties by regions across Austin. Once I had these clusters I could take the centroids and use them as way points
+to calculate the relative dispersion of properties across the city. Here are those centroids plotted on a map of Austin:
+
+I used silhoette scoring to help me determine the number for k that made the most sense when clustering the properties
+based on latitude and longitude. I'll let you read more into the specifics of the silhouette scoring in the <a href='https://scikit-learn.org/stable/auto_examples/cluster/plot_kmeans_silhouette_analysis.html'>sci-kit learn documentation</a> but
+the gist is that it is a measure of cluster quality. To maximize the silhoette score is to maximize the similarity between
+points within clusters. In running a few tests, I found that 15 clusters maximized the coherence of my clusters. Here is
+the score plot that I generated using the sci-kit learn boilerplate:
+
+Once I had the correct centroids located, I calculated the mean distance to centroid for each property and used this as a 
+feature for the sake of the scoring model. Having addressed all three factors I began scoring and plotting the results.
+
 
 ## Scoring and plotting
 
