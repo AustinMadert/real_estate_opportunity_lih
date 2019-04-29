@@ -52,13 +52,20 @@ coordinates as well as home values and other specifics!
 
 ### Boosting
 
-Having worked hard to get to this point, I recognize that it is not possible to create an intelligent housing program based 
-solely on only 700 homes worth of data. It's at this point that I leveraged the help of a colleague who had a dataset of 
-a large majority of the addresses for properties in Austin, complete with zip codes. I took the <a href='https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor'>Gradient 
-Boosting Regressor from sci-kit learn</a> and trained it on my small trulia dataset. I was then able to regress the price,
-price per sqft, sqft, bedrooms, and bathrooms onto the larger dataset. By doing this I was able to make an approximation 
-of what I would have liked to have been able to scrape from Trulia. From this point I was ready to begin the process of 
-feature engineering.
+At this point, I recognized that it was not possible to create an intelligent housing program based 
+solely on only 700 homes worth of data. So, I leveraged the help of a colleague who had a dataset of 
+a large majority of the addresses for properties in Austin, complete with zip codes. In total, the larger list of addresses
+represented around 140,000 unique properties. My thought process was that I could use the trulia data to train a model 
+and then regress specifications such as price per sqft onto the larger dataset. This makes sense because the price per
+sqft is relatively stable with relation to location.
+
+Using only latitudes, longitudes, and price per sqft, I took the <a href='https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor'>Gradient Boosting Regressor 
+from sci-kit learn</a> and trained it on my trulia dataset. I was then able to regress the price per sqft onto the larger 
+dataset. I then trained a new regressor using latitude, longitude, price per sqft, and price on the Trulia data and 
+regressed the price data onto the larger dataset. I repeated this process for bedrooms and bathrooms as well. After boosting
+I had a much larger dataset to work with. As an aside, I recognize this is a limitation to the specific conclusions of this
+project, however it was necessary to get a larger dataset in order to test assumptions, and ballpark estimates would do for
+my purposes. Having generated the data, I was ready to begin the process of feature engineering.
 
 
 ## Feature engineering
@@ -67,3 +74,5 @@ feature engineering.
 - price per sqft
 
 ## Scoring and plotting
+
+## Conclusion and Next Steps
