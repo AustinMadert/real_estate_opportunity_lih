@@ -114,9 +114,9 @@ algorithm to cluster all the properties by only two dimension: latitude and long
 groups properties by regions across Austin. Once I had these clusters I could take the centroids and use them as way points
 to calculate the relative dispersion of properties across the city. Here are those centroids plotted on a map of Austin:
 
-I used silhoette scoring to help me determine the number for k that made the most sense when clustering the properties
+I used silhouette scoring to help me determine the number for k that made the most sense when clustering the properties
 based on latitude and longitude. I'll let you read more into the specifics of the silhouette scoring in the <a href='https://scikit-learn.org/stable/auto_examples/cluster/plot_kmeans_silhouette_analysis.html'>sci-kit learn documentation</a> but
-the gist is that it is a measure of cluster quality. To maximize the silhoette score is to maximize the similarity between
+the gist is that it is a measure of cluster quality. To maximize the silhouette score is to maximize the similarity between
 points within clusters. In running a few tests, I found that 15 clusters maximized the coherence of my clusters. Here is
 the score plot that I generated using the sci-kit learn boilerplate:
 
@@ -125,5 +125,15 @@ feature for the sake of the scoring model. Having addressed all three factors I 
 
 
 ## Scoring and plotting
+
+In order to actually choose properties that maximize all three factors I listed, I needed a way to rank them. So, I decided
+to normalize the values for price per sqft, minimum distance to public transportation, and distance to cluster centers.
+This makes sense because the normalized values will fall between 0 and 1, representing the value relative to the other values
+in the range. So, we can find the relative best options by maximizing the normalized values (for the purpose of min distance
+to transportation we invert them by taking 1 -  the normalized value so that we are consistently trying to maximize scores).
+
+Once that was done, I added all three normalized values together to get a score. I took the top 100 highest ranking properties
+and plotted them on a map of Austin:
+
 
 ## Conclusion and Next Steps
