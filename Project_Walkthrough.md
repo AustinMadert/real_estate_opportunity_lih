@@ -94,6 +94,8 @@ across the city.
 As is unsurprising, a heatmap shows that prices are highest in the downtown area of Austin and decrease to the north and 
 south. 
 
+<img src='images/Heatmap.png'>
+
 Price needed to be factored into the model and price per sqft was a better way to observe efficiency than total price. 
 Price per bedroom was also considered, however there seemed to be little difference in favoring one metric over the other
 and price per sqft is stable relative to location, so this was the metric of choice. 
