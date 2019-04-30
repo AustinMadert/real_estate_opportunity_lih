@@ -15,6 +15,7 @@ Finally, I plotted my picks for the best houses and used visualization to help u
 model.
 
 
+
 ## Data acquisition
 
 
@@ -73,6 +74,7 @@ regressed the price data onto the larger dataset. I repeated this process for be
 I had a much larger dataset to work with. As an aside, I recognize this is a limitation to the specific conclusions of this
 project, however it was necessary to get a larger dataset in order to test assumptions, and ballpark estimates would do for
 my purposes. Having generated the data, I was ready to begin the process of feature engineering.
+
 
 
 ## Feature engineering
@@ -139,6 +141,7 @@ Once I had the correct centroids located, I calculated the mean distance to cent
 feature for the sake of the scoring model. Having addressed all three factors I began scoring and plotting the results.
 
 
+
 ## Scoring and plotting
 
 In order to actually choose properties that maximize all three factors I listed, I needed a way to rank them. So, I decided
@@ -152,6 +155,11 @@ and plotted them on a map of Austin:
 
 <img src='images/final2.png'>
 
+I was happy with the overall dispersion that I was able to get using the scoring, however the plot above represents 100 
+properties which means we're getting some points stacked close together. My thoughts are that these points are grouped 
+because they share very similar characteristics on the scale of the entirety of Austin. This might mean apartments in a
+complex or houses in a neighborhood getting very similar scores because they all have similar distance and price metrics.
+
 
 ## Conclusion and Next Steps
 
@@ -160,3 +168,13 @@ useful for addressing low income housing program planning? I would argue yes, be
 amenities as we are choosing properties which would be arguably important to the success of the program. The second question 
 was whether we could use the data to choose the most prime properties and we were able to demonstrate that this is also 
 possible. 
+
+I don't, however, claim that the model is perfect in its current state. There are the data considerations
+mentioned previously, as well as the stacking issue mentioned in the last section. I think that it might be useful to try
+different factors in the scoring to see if this helps improve the quality of the end ranking. I also think it might be 
+useful to re-examine the dataset to potentially drop certain properties that simply would not make sense in a low income
+housing program (mansions for instance). This could be achieved by focusing on certain areas (centroids to the west of 
+the city represent groups of lake front properties that happen to be large, expensive, single-family dwellings).
+
+This project does however create an interesting starting point for using geospatial data to inform the decision making 
+process involved in low income housing programs.
