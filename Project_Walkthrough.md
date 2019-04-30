@@ -33,6 +33,13 @@ and so this doesn't mimick human browsing behavior closely. To achieve that, I b
 medium written by Bartosz Mikulski</a>. He modified the autothrottle functionality of scrapy to include delays based on
 random variables sampled from the exponential distribution, which tend to create a pattern similar to human browsing. 
 
+<img src='images/exponential.png'>
+
+As you can see in the above, if we sampled random values from the distribution, most would have a shorter delay relatively
+speaking, which intuition provides is human-like (as you're surfing the internet, you typically only pause for long periods
+rarely and are otherwise fairly active).
+
+
 Lastly, I used proxy servers to send get requests to the Trulia website which allowed me to use an IP address other than
 the one on my home router. Trulia will very quickly block your requests if they can identify rapid and repeated requests 
 from the same IP address. You can find free proxy servers via a simple google search and impliment them as I have done in
@@ -97,6 +104,8 @@ and price per sqft is stable relative to location, so this was the metric of cho
 The <a href='https://data.austintexas.gov/'>city of Austin open data portal</a> had a helpful dataset including the coordinates
 to all bus stops within the city. I plotted those below to give an idea of what we were working with:
 
+<img src='images/buses.png'>
+
 Given that I had access to the locations of bus stops and potential properties, I was
 able to calculate the distance between each property and each bus stop and find the minimum distance to transportation for
 each address. Given that I was using latitudes and longitudes, I used the haversine distance calculation which gives the
@@ -114,11 +123,15 @@ algorithm to cluster all the properties by only two dimension: latitude and long
 groups properties by regions across Austin. Once I had these clusters I could take the centroids and use them as way points
 to calculate the relative dispersion of properties across the city. Here are those centroids plotted on a map of Austin:
 
+<img src='images/centroids2.png'>
+
 I used silhouette scoring to help me determine the number for k that made the most sense when clustering the properties
 based on latitude and longitude. I'll let you read more into the specifics of the silhouette scoring in the <a href='https://scikit-learn.org/stable/auto_examples/cluster/plot_kmeans_silhouette_analysis.html'>sci-kit learn documentation</a> but
 the gist is that it is a measure of cluster quality. To maximize the silhouette score is to maximize the similarity between
 points within clusters. In running a few tests, I found that 15 clusters maximized the coherence of my clusters. Here is
 the score plot that I generated using the sci-kit learn boilerplate:
+
+<img src='images/silhouette.png'>
 
 Once I had the correct centroids located, I calculated the mean distance to centroid for each property and used this as a 
 feature for the sake of the scoring model. Having addressed all three factors I began scoring and plotting the results.
@@ -135,5 +148,13 @@ to transportation we invert them by taking 1 -  the normalized value so that we 
 Once that was done, I added all three normalized values together to get a score. I took the top 100 highest ranking properties
 and plotted them on a map of Austin:
 
+<img src='images/final2.png'>
+
 
 ## Conclusion and Next Steps
+
+Through the course of this project, I was able to answer the two main questions I posed before starting. Is geospatial data
+useful for addressing low income housing program planning? I would argue yes, because it allowed us to consider relative
+amenities as we are choosing properties which would be arguably important to the success of the program. The second question 
+was whether we could use the data to choose the most prime properties and we were able to demonstrate that this is also 
+possible. 
