@@ -137,8 +137,10 @@ the score plot that I generated using the sci-kit learn boilerplate:
 
 <img src='images/silhouette.png'>
 
-Once I had the correct centroids located, I calculated the mean distance to centroid for each property and used this as a 
-feature for the sake of the scoring model. Having addressed all three factors I began scoring and plotting the results.
+Of note, the goal is to have the bands in the left graph pictured above to be as similar as possible. The color coding 
+matches the clusters plotted in the graph on the right. Once I had the correct centroids located, I calculated the mean 
+distance to centroid for each property and used this as a feature for the sake of the scoring model. Having addressed all 
+three factors I began scoring and plotting the results.
 
 
 
