@@ -40,7 +40,6 @@ As you can see in the above, if we sampled random values from the distribution, 
 speaking, which intuition provides is human-like (as you're surfing the internet, you typically only pause for long periods
 rarely and are otherwise fairly active).
 
-
 Lastly, I used proxy servers to send get requests to the Trulia website which allowed me to use an IP address other than
 the one on my home router. Trulia will very quickly block your requests if they can identify rapid and repeated requests 
 from the same IP address. You can find free proxy servers via a simple google search and impliment them as I have done in
@@ -115,6 +114,8 @@ able to calculate the distance between each property and each bus stop and find 
 each address. Given that I was using latitudes and longitudes, I used the haversine distance calculation which gives the
 distance between two points on a great circle. This is the same as calculating the distance between two points on the 
 surface of a sphere, which in this case was planet Earth. 
+
+<img src='images/greatcircle.png'>
 
 I have the functions I used for these calculations, along with other helper functions in the <a href='helper_functions/featuring_engineering.py'>helper functions folder</a> of this repo.
 
