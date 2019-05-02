@@ -40,8 +40,6 @@ class TrulSpider(scrapy.Spider):
         for page_url in page_urls:
             yield scrapy.Request(page_url, callback=self.parse_listing_results_page)
 
-        return None
-
     
     def parse_listing_results_page(self, response):
         """Takes the response for each listing results page and parses for each 
@@ -59,8 +57,6 @@ class TrulSpider(scrapy.Spider):
             url = response.urljoin(href)
             yield scrapy.Request(url, callback=self.parse_listing_contents
             )
-        
-        return None
 
     
     def parse_listing_contents(self, response):
@@ -129,5 +125,3 @@ class TrulSpider(scrapy.Spider):
         
         item['url'] = response.url
         yield item
-
-        return None
