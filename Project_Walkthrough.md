@@ -25,8 +25,8 @@ I began my work with the help of another project featured in the <a href='https:
 as well as a trulia spider using the scrapy library. I had never seen the scrapy library and the article (written in 2017)
 made the process of scraping Trulia seem simple. To make a long and somewhat frustrating story shorter, Trulia does a very
 good job of protecting their data (which makes sense given that scraping is against their terms of service). They had also
-made changes to how they stored data on their listing pages to where I needed to heavily modify the spider in the original
-post. 
+made changes to how they stored data on their listing pages, and so I needed to heavily modify the spider in the original
+post. <a href='src/scraping/trulia/spiders/trulia_spider.py'>You can find my version of the spider in this repo!</a>
 
 Additionally, scrapy has functionality to throttle the delay on get requests in order to limit how much strain you spider
 puts on the server. The AutoThrottle functionality that comes with scrapy adjusts request timing based on download latency
@@ -115,9 +115,9 @@ each address. Given that I was using latitudes and longitudes, I used the havers
 distance between two points on a great circle. This is the same as calculating the distance between two points on the 
 surface of a sphere, which in this case was planet Earth. 
 
-<img src='images/greatcircle.png' height=400 width=400>
+<img src='images/greatcircle.png' height=300 width=300>
 
-I have the functions I used for these calculations, along with other helper functions in the <a href='helper_functions/featuring_engineering.py'>helper functions folder</a> of this repo.
+I have the functions I used for these calculations, along with other helper functions in the <a href='helper_functions/feature_engineering.py'>helper functions folder</a> of this repo.
 
 
 ### Clustering
