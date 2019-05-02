@@ -4,9 +4,6 @@ import sys
 sys.path.append('/Users/austinmadert/scrapy_fork/src/scrapy')
 
 import scrapy
-from scrapy.crawler import CrawlerProcess
-import json
-import re
 from items import TruItem
 
 
