@@ -115,7 +115,7 @@ each address. Given that I was using latitudes and longitudes, I used the havers
 distance between two points on a great circle. This is the same as calculating the distance between two points on the 
 surface of a sphere, which in this case was planet Earth. 
 
-<img src='images/greatcircle.png'>
+<img src='images/greatcircle.png' height=100 width=100>
 
 I have the functions I used for these calculations, along with other helper functions in the <a href='helper_functions/featuring_engineering.py'>helper functions folder</a> of this repo.
 

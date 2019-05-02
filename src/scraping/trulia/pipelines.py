@@ -24,7 +24,7 @@ class DuplicatesPipeline(object):
 class WriteItemPipeline(object):
 
     def __init__(self):
-        self.filename = 'atx_listings_trulia_9.csv'
+        self.filename = 'atx_listings_trulia.csv'
 
     def open_spider(self, spider):
         self.csvfile = open(self.filename, 'wb')
