@@ -11,5 +11,7 @@ would be to a potential housing program. The project uses three main factors to 
 
  For a more in-depth walkthrough of the project, visit the <a href=Project_Walkthrough.md>project walkthrough markdown </a>
 
+ To take a look at the code used in Pyspark visit the <a href="notebooks/Sparkbook_LIH.ipynb">Pyspark enabled jupyter notebook.</a>
+
  The workflow is split across multiple working jupyter notebooks located in the 'notebooks' folder. Additionally, scrapers and 
  helper functions can be found in the src and helper_functions folders respectively.

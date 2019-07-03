@@ -4,7 +4,7 @@ import sys
 sys.path.append('/Users/austinmadert/scrapy_fork/src/scrapy')
 
 import scrapy
-from items import TruItem
+from ..items import TruItem
 
 
 query = 'TX/Austin/'

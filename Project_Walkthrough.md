@@ -59,6 +59,9 @@ coordinates as well as home values and other specifics!
 
 ### Boosting
 
+<strong>EDIT: Please take a look at the <a href='notebooks/Sparkbook_LIH.ipynb'>Pyspark rework of this project</a> 
+to follow along with the code.</strong>
+
 At this point, I recognized that it was not possible to create an intelligent housing program based 
 solely on only 700 homes worth of data. So, I leveraged the help of a colleague who had a dataset of 
 a large majority of the addresses for properties in Austin, complete with zip codes. In total, the larger list of addresses
@@ -157,6 +160,8 @@ Once that was done, I added all three normalized values together to get a score.
 and plotted them on a map of Austin:
 
 <img src='images/final2.png'>
+
+<strong>Note:</strong> if you'd like to take a look at the helper function I used to generate these plots, <a href='helper_functions/plotly_plottying.py'>you can find it here.</a>
 
 I was happy with the overall dispersion that I was able to get using the scoring, however the plot above represents 100 
 properties which means we're getting some points stacked close together. My thoughts are that these points are grouped 
