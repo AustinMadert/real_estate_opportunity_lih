@@ -161,7 +161,7 @@ and plotted them on a map of Austin:
 
 <img src='images/final2.png'>
 
-<strong>Note:</strong> if you'd like to take a look at the helper function I used to generate these plots, <a href='helper_functions/plotly_plottying.py'>you can find it here.</a>
+<strong>Note:</strong> if you'd like to take a look at the helper function I used to generate these plots, <a href='helper_functions/plotly_plotting.py'>you can find it here.</a>
 
 I was happy with the overall dispersion that I was able to get using the scoring, however the plot above represents 100 
 properties which means we're getting some points stacked close together. My thoughts are that these points are grouped 
